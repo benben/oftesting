@@ -1,0 +1,8 @@
+of_source: /home/ben/code/openFrameworks
+
+boxes:
+  - name: 'vagrant-fedora16-gnome-32bit'
+    distro: 'fedora' #name of distro folder in of/scripts
+    pre_command: 'sudo yum update'
+  #- name: vagrant-ubuntu12.04-gnome-32bit
+  #  pre_command: 'sudo apt-get update && sudo apt-get dist-upgrade'
