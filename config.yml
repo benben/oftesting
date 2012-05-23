@@ -1,8 +1,15 @@
 of_source: /home/ben/code/openFrameworks
+share_folder: share
+
 
 boxes:
   - name: 'vagrant-fedora16-gnome-32bit'
     distro: 'fedora' #name of distro folder in of/scripts
     pre_command: 'sudo yum update'
+    install_scripts:
+      - 'install_dependencies.sh'
+      - 'install_codecs.sh'
+      - 'install_codeblocks.sh'
+      - 'remove_codeblocks.sh'
   #- name: vagrant-ubuntu12.04-gnome-32bit
   #  pre_command: 'sudo apt-get update && sudo apt-get dist-upgrade'

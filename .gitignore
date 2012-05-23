@@ -1,3 +1,5 @@
 of_source/
 of/
 *.box
+.vagrant/
+.vagrant
