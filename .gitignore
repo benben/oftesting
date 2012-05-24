@@ -3,3 +3,4 @@ of/
 *.box
 .vagrant/
 .vagrant
+testruns/*

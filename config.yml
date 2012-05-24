@@ -5,7 +5,7 @@ share_folder: share
 boxes:
   - name: 'vagrant-fedora16-gnome-32bit'
     distro: 'fedora' #name of distro folder in of/scripts
-    pre_command: 'sudo yum update'
+    pre_command: 'sudo yum update -y'
     install_scripts:
       - 'install_dependencies.sh'
       - 'install_codecs.sh'
