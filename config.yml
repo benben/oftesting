@@ -7,9 +7,15 @@ boxes:
     distro: 'fedora' #name of distro folder in of/scripts
     pre_command: 'sudo yum update -y'
     install_scripts:
-      - 'install_dependencies.sh'
       - 'install_codecs.sh'
+      - 'install_dependencies.sh'
       - 'install_codeblocks.sh'
       - 'remove_codeblocks.sh'
-  #- name: vagrant-ubuntu12.04-gnome-32bit
-  #  pre_command: 'sudo apt-get update && sudo apt-get dist-upgrade'
+  - name: vagrant-ubuntu-12.04-32bit
+    distro: 'ubuntu'
+    pre_command: 'sudo apt-get update -y && sudo apt-get dist-upgrade -y'
+    install_scripts:
+      - 'install_codecs.sh'
+      - 'install_dependencies.sh'
+      - 'install_codeblocks.sh'
+      - 'remove_codeblocks.sh'
