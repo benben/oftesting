@@ -104,6 +104,6 @@ end
 
 desc 'clean'
 task :clean do
-  shell_exec "rm -rf tmp/*"
-  shell_exec "rm -rf share/of"
+  %x[rm -rf tmp/*]
+  %x[rm -rf share/of]
 end
