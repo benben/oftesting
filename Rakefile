@@ -40,12 +40,17 @@ task :test do
   start_time = Time.now
   result[:name] = "run_#{start_time.strftime('%Y-%m-%d_%H%M%S')}"
   result[:start_time] = start_time
-  result[:systems] = []
+  result[:end_time] = ""
   unless File.directory?("tmp/of_source")
     puts '# copying openFrameworks source'
     shell_exec "cp -r #{config['of_source']} tmp/of_source"
+    # saving the last commit sha
+    shell_exec "cd tmp/of_source && git rev-parse HEAD > ../commit && cd -"
+    # removing all the git stuff
     shell_exec "rm -rf tmp/of_source/.git"
   end
+  result[:commit] = File.read('tmp/commit').chomp
+  result[:systems] = []
   puts '## compiling on all VMs...'
   config['boxes'].each do |box|
     box_result = {:name => box['name']}
@@ -59,8 +64,8 @@ task :test do
     shell_exec_on box['name'], "#{box['pre_command']}"
 
     #install scripts
-    puts "# running install scripts..."
     box['install_scripts'].each do |script|
+      puts "# running #{script}.."
       res = shell_exec_on box['name'], "cd /vagrant/of/scripts/linux/#{box['distro']} && sudo ./#{script}"
       box_result[:tests] << {:name => script}.merge!(res)
     end
