@@ -1,6 +1,6 @@
 of_source: /home/ben/code/openFrameworks
 share_folder: share
-
+cpu_count: 4
 
 boxes:
   - name: vagrant-archlinux-gnome-32bit

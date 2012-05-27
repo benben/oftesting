@@ -8,7 +8,8 @@ Vagrant::Config.run do |config|
   of_config['boxes'].each do |box|
     config.vm.define box['name'].to_sym do |box_config|
       box_config.vm.box = box['name']
-      box_config.vm.share_folder "foo", "/vagrant", of_config['share_folder']
+      box_config.vm.share_folder "vagrant", "/vagrant", of_config['share_folder']
+      box_config.vm.cpu_count = of_config['cpu_count']
       #box_config.vm.boot_mode = :gui
     end
   end
