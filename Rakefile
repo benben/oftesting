@@ -1,6 +1,5 @@
+require 'bundler/setup'
 require 'open3'
-require 'colorize'
-require 'json'
 
 config = YAML.load_file('config.yml')
 
