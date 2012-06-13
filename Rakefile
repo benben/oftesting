@@ -14,12 +14,12 @@ def shell_exec command
   log_error = []
 
   while (line = stdout.gets)
+    log_complete << line
     if File.readlines('tmp/errorlog').include? line
       log_error << line
       line = line.red
       status = 'warning'
     end
-    log_complete << line
     $stdout.write line
   end
 
