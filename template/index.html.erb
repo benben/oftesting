@@ -1,0 +1,79 @@
+<%= render 'header' %>
+<% @results.each do |result| %>
+  <p>
+    <a href=""><i class="icon-chevron-right icon-white"></i><%= result['name'] %></a>
+    on <%= result['commit'] %>
+    <span class="badge badge-success"><%= result['overall']['passed'] %></span>
+    <span class="badge badge-warning"><%= result['overall']['warning'] %></span>
+    <span class="badge badge-important"><%= result['overall']['error'] %></span>
+  </p>
+  <div>
+    <table>
+      <tr>
+        <td>Start time:</td>
+        <td><%= DateTime.parse(result['start_time']).strftime("%d.%m.%Y %H:%M:%S") %></td>
+      </tr>
+      <tr>
+        <td>Duration:</td>
+        <td><%= time_diff(result['start_time'],result['end_time']) %></td>
+      </tr>
+      <tr>
+        <td>Commit:</td>
+        <td><a href="https://github.com/openframeworks/openFrameworks/commit/<%= result['commit'] %>"><%= result['commit'] %></a> (develop)</td>
+      </tr>
+      <tr>
+        <td>Complete log:</td>
+        <td><a href="">Download</a> (bzip2, 104k)</td>
+      </tr>
+    </table>
+    <h3>Matrix</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Operation System</th>
+          <th>Results</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="testruns/db28c684dc0d2e7a5c782b2bf4dc30ea85f2b383/vagrant-fedora16-gnome-32bit">vagrant-fedora16-gnome-32bit</a></td>
+          <td>
+            <span class="badge badge-success">20</span>
+            <span class="badge badge-warning">12</span>
+            <span class="badge badge-important">1</span>
+          </td>
+          <td><a href=""><i class="icon-search"></i></a></td>
+        </tr>
+        <tr>
+          <td>vagrant-ubuntu-12.04-32bit</td>
+          <td>
+            <span class="badge badge-success">25</span>
+            <span class="badge badge-warning">20</span>
+            <span class="badge badge-important">4</span>
+          </td>
+          <td><a href=""><i class="icon-search"></i></a></td>
+        </tr>
+        <tr>
+          <td>vagrant-archlinux-gnome-32bit</td>
+          <td>
+            <span class="badge badge-success">30</span>
+            <span class="badge badge-warning">1</span>
+            <span class="badge badge-important">10</span>
+          </td>
+          <td><a href=""><i class="icon-search"></i></a></td>
+        </tr>
+        <tr>
+          <td>vagrant-debian6.0.5-gnome-32bit</td>
+          <td>
+            <span class="badge badge-success">28</span>
+            <span class="badge badge-warning">30</span>
+            <span class="badge badge-important">5</span>
+          </td>
+          <td><a href=""><i class="icon-search"></i></a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+<%= render 'footer' %>

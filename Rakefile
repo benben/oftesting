@@ -35,6 +35,11 @@ def shell_exec_on box_name, command
   shell_exec "vagrant ssh #{box_name} -c '#{command}'"
 end
 
+def render name
+  require 'erb'
+  ERB.new(File.read("template/#{name}.html.erb")).result(binding)
+end
+
 result = {}
 
 desc 'test everything on all VMs'
@@ -108,8 +113,60 @@ task :test do
   File.open("#{dir_name}/result.json", 'w+', encoding: Encoding::UTF_8) {|f| f.write(JSON.pretty_generate(result)) }
 end
 
-desc 'clean'
+desc 'clean all temporary files'
 task :clean do
   %x[rm -rf tmp/*]
   %x[rm -rf share/of]
+end
+
+def time_diff start_time, end_time
+  require 'time_diff'
+  d = Time.diff(start_time, end_time)
+  str = []
+
+  %w[hour minute second].each do |t|
+    s = ""
+    if d[t.to_sym] != 0
+      s += "#{d[t.to_sym]} #{t}"
+      s += "s" if d[t.to_sym] > 1
+    end
+    str << s if s.length > 0
+  end
+
+  str.join(' ')
+end
+
+desc 'generate web pages'
+task :generate do
+  require 'date'
+
+
+  %x[rm -rf tmp/web]
+  Dir.mkdir(config['www_dir'])
+  %x[cp -R template/css tmp/web/]
+  %x[cp -R template/img tmp/web/]
+  %x[cp -R template/js tmp/web/]
+  @results = []
+  Dir["testruns/*/result.json"].each do |testrun_file|
+    @results << JSON.parse(File.read(testrun_file))
+  end
+
+  @results.each do |result|
+    overall = {}
+
+    result['systems'].each do |system|
+      system['tests'].each do |test|
+        if overall.has_key? test['status']
+          overall[test['status']] += 1
+        else
+          overall[test['status']] = 1
+        end
+      end
+    end
+
+    result['overall'] = overall
+  end
+  f = File.new("#{config['www_dir']}index.html", 'w+')
+  f.write(render 'index')
+  f.close
 end
