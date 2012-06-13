@@ -129,13 +129,17 @@
             $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
           };
         });
-        $('#content p a').toggle(function(ev){
+        $('#content p a').click(function(ev){
           ev.preventDefault();
-          $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
-          $(this).parent().next().toggle();
-        }, function(ev){
-          ev.preventDefault();
-          $(this).parent().next().toggle();
+          if ($(this).parent().next().is(":visible")) {
+            console.log('collapse!');
+            $(this).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-right');
+            $(this).parent().next().hide();
+          } else {
+            console.log('expand!');
+            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+            $(this).parent().next().show();
+          }
         });
       });
     </script>
