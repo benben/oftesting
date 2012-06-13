@@ -9,20 +9,11 @@ Vagrant::Config.run do |config|
     config.vm.define box['name'].to_sym do |box_config|
       box_config.vm.box = box['name']
       box_config.vm.share_folder "vagrant", "/vagrant", of_config['share_folder']
-      box_config.vm.cpu_count = of_config['cpu_count']
+      box_config.vm.customize do |vm|
+        vm.cpu_count = of_config['cpu_count']
+        vm.memory_size = of_config['memory_size']
+      end
       #box_config.vm.boot_mode = :gui
     end
   end
-
-  # config.vm.define :"vagrant-fedora16-gnome-32bit" do |box_config|
-  #   box_config.vm.box = "vagrant-fedora16-gnome-32bit"
-  #   box_config.vm.share_folder "foo", "/vagrant", of_config['share_folder']
-  #   #box_config.vm.boot_mode = :gui
-  # end
-
-  # config.vm.define :"vagrant-ubuntu-12.04-32bit" do |box_config|
-  #   box_config.vm.box = "vagrant-ubuntu-12.04-32bit"
-  #   box_config.vm.share_folder "foo", "/vagrant", of_config['share_folder']
-  #   #box_config.vm.boot_mode = :gui
-  # end
 end

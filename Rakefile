@@ -1,5 +1,7 @@
 require 'bundler/setup'
 require 'open3'
+require 'colored'
+require 'json'
 
 config = YAML.load_file('config.yml')
 
@@ -76,9 +78,9 @@ task :test do
     box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
 
     #project generator (run --allexamples)
-    #puts "# running the project generator..."
-    #res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples'
-    #box_result[:tests] << {:name => './projectGenerator --allexamples'}.merge!(res)
+    puts "# running the project generator..."
+    res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples'
+    box_result[:tests] << {:name => './projectGenerator --allexamples'}.merge!(res)
 
     #examples
     puts "## compiling all examples..."

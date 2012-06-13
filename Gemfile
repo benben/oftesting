@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rake'
-gem 'colorize'
+gem 'json', '~>1.5.1'
+gem 'vagrant', '~>1.0.3'
+gem 'colored'
