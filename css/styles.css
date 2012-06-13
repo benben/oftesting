@@ -232,3 +232,8 @@ footer {
   color: #B94A48;
   font-weight: bold;
 }
+
+.highlight pre {
+  font-family: monospace;
+  font-size: 80%;
+}
