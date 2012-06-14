@@ -2,49 +2,52 @@ require 'bundler/setup'
 require 'open3'
 require 'colored'
 require 'json'
+require 'timeout'
 
-config = YAML.load_file('config.yml')
+@config = YAML.load_file('config.yml')
 
-def shell_exec command
+def shell_exec command, timeout=0
+  path = File.dirname(__FILE__)
+  status = 'passed'
+  log_complete = []
+  log_error = []
+
   begin
-    Timeout::timeout(config['script_timeout']) do
+    timeout = timeout != 0 ? timeout : @config['command_timeout']
+    Timeout::timeout(timeout) do
       # running the command, writing exit code to tmp/exit_code, writing all errors to tmp/errorlog, piping everything to stdout
-      stdin, stdout, stderr, wait_thr = Open3.popen3("((#{command}; echo $? > tmp/exit_code) 2>&1 1>&3 | tee tmp/errorlog ) 3>&1")
-
-      status = 'passed'
-      log_complete = []
-      log_error = []
+      stdin, stdout, stderr, wait_thr = Open3.popen3("((#{command}; echo $? > #{path}/tmp/exit_code) 2>&1 1>&3 | tee #{path}/tmp/errorlog ) 3>&1")
 
       while (line = stdout.gets)
         log_complete << line
-        if File.readlines('tmp/errorlog').include? line
-          log_error << line
-          line = line.red
-          status = 'warning'
+        if File.exists?("#{path}/tmp/errorlog")
+          if File.readlines("#{path}/tmp/errorlog").include? line
+            log_error << line
+            line = line.red
+            status = 'warning'
+          end
         end
         $stdout.write line
       end
 
-      status = 'error' if File.read('tmp/exit_code').to_i != 0
+      status = 'error' if File.read("#{path}/tmp/exit_code").to_i != 0
     end
   rescue Timeout::Error => e
-    line = "## TIMEOUT::ERROR: Command was interrupted after #{config['script_timeout']} seconds ##\n"
+    line = "## TIMEOUT::ERROR: Command was interrupted after #{timeout} seconds ##\n"
     log_complete << line
     log_error << line
     status = 'error'
     $stdout.write line.red
   end
 
-
-
-  File.delete('tmp/errorlog')
-  File.delete('tmp/exit_code')
+  %x[rm -f #{path}/tmp/errorlog]
+  %x[rm -f #{path}/tmp/exit_code]
 
   {:status => status, :log_complete => log_complete.join, :log_error => log_error.join}
 end
 
-def shell_exec_on box_name, command
-  shell_exec "vagrant ssh #{box_name} -c '#{command}'"
+def shell_exec_on box_name, command, timeout=0
+  shell_exec "vagrant ssh #{box_name} -c '#{command}'", timeout
 end
 
 def render name
@@ -62,7 +65,7 @@ task :test do
   result[:end_time] = ""
   unless File.directory?("tmp/of_source")
     puts '# copying openFrameworks source'
-    shell_exec "cp -r #{config['of_source']} tmp/of_source"
+    shell_exec "cp -r #{@config['of_source']} tmp/of_source"
     # saving the last commit sha
     shell_exec "cd tmp/of_source && git rev-parse HEAD > ../commit && cd -"
     # removing all the git stuff
@@ -71,12 +74,12 @@ task :test do
   result[:commit] = File.read('tmp/commit').chomp
   result[:systems] = []
   puts '## compiling on all VMs...'
-  config['boxes'].each do |box|
+  @config['boxes'].each do |box|
     box_result = {:name => box['name']}
     box_result[:tests] = []
     puts "# making fresh OF copy for #{box['name']}"
-    shell_exec "rm -rf #{config['share_folder']}/of"
-    shell_exec "cp -r tmp/of_source #{config['share_folder']}/of"
+    shell_exec "rm -rf #{@config['share_folder']}/of"
+    shell_exec "cp -r tmp/of_source #{@config['share_folder']}/of"
     puts "# starting the vm..."
     shell_exec "vagrant up #{box['name']}"
     puts "# running pre command..."
@@ -85,7 +88,7 @@ task :test do
     #install scripts
     box['install_scripts'].each do |script|
       puts "# running #{script}.."
-      res = shell_exec_on box['name'], "cd /vagrant/of/scripts/linux/#{box['distro']} && sudo ./#{script}"
+      res = shell_exec_on box['name'], "cd /vagrant/of/scripts/linux/#{box['distro']} && sudo ./#{script}", 1200
       box_result[:tests] << {:name => script}.merge!(res)
     end
 
@@ -96,12 +99,12 @@ task :test do
 
     #project generator (run --allexamples)
     puts "# running the project generator..."
-    res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples'
+    res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples', 120
     box_result[:tests] << {:name => './projectGenerator --allexamples'}.merge!(res)
 
     #examples
     puts "## compiling all examples..."
-    Dir["#{config['share_folder']}/of/examples/*/*/Makefile"].each do |makefile|
+    Dir["#{@config['share_folder']}/of/examples/*/*/Makefile"].each do |makefile|
       makefile.gsub!(/^share\//, '/vagrant/')
       dir = File.dirname(makefile)
       name = dir.match /[^\/]+$/
@@ -113,7 +116,7 @@ task :test do
     result[:systems] << box_result
 
     puts "# deleting OF folder..."
-    shell_exec "rm -rf #{config['share_folder']}/of"
+    shell_exec "rm -rf #{@config['share_folder']}/of"
     puts "# halting the vm..."
     shell_exec "vagrant halt #{box['name']}"
   end
@@ -154,7 +157,7 @@ task :generate do
 
 
   %x[rm -rf tmp/web]
-  Dir.mkdir(config['www_dir'])
+  Dir.mkdir(@config['www_dir'])
   %x[cp -R template/css tmp/web/]
   %x[cp -R template/img tmp/web/]
   %x[cp -R template/js tmp/web/]
@@ -178,7 +181,7 @@ task :generate do
 
     result['overall'] = overall
   end
-  f = File.new("#{config['www_dir']}index.html", 'w+')
+  f = File.new("#{@config['www_dir']}index.html", 'w+')
   f.write(render 'index')
   f.close
 end
