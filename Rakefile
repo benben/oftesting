@@ -43,7 +43,7 @@ def shell_exec command, timeout=0
   %x[rm -f #{path}/tmp/errorlog]
   %x[rm -f #{path}/tmp/exit_code]
 
-  {:status => status, :log_complete => log_complete.join, :log_error => log_error.join}
+  {:status => status, :log_complete => log_complete, :log_error => log_error}
 end
 
 def shell_exec_on box_name, command, timeout=0
