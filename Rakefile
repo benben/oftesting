@@ -6,21 +6,30 @@ require 'json'
 config = YAML.load_file('config.yml')
 
 def shell_exec command
-  # running the command, writing exit code to tmp/exit_code, writing all errors to tmp/errorlog, piping everything to stdout
-  stdin, stdout, stderr, wait_thr = Open3.popen3("((#{command}; echo $? > tmp/exit_code) 2>&1 1>&3 | tee tmp/errorlog ) 3>&1")
+  begin
+    Timeout::timeout(config['script_timeout']) do
+      # running the command, writing exit code to tmp/exit_code, writing all errors to tmp/errorlog, piping everything to stdout
+      stdin, stdout, stderr, wait_thr = Open3.popen3("((#{command}; echo $? > tmp/exit_code) 2>&1 1>&3 | tee tmp/errorlog ) 3>&1")
 
-  status = 'passed'
-  log_complete = []
-  log_error = []
+      status = 'passed'
+      log_complete = []
+      log_error = []
 
-  while (line = stdout.gets)
-    log_complete << line
-    if File.readlines('tmp/errorlog').include? line
-      log_error << line
-      line = line.red
-      status = 'warning'
+      while (line = stdout.gets)
+        log_complete << line
+        if File.readlines('tmp/errorlog').include? line
+          log_error << line
+          line = line.red
+          status = 'warning'
+        end
+        $stdout.write line
+      end
     end
-    $stdout.write line
+  rescue Timeout::Error => e
+    line = "## TIMEOUT::ERROR: Command was interrupted after #{config['script_timeout']} seconds ##\n"
+    log_complete << line
+    log_error << line
+    $stdout.write line.red
   end
 
   status = 'error' if File.read('tmp/exit_code').to_i != 0
