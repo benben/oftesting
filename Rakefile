@@ -235,6 +235,26 @@ task :generate do
   f.close
 end
 
+desc 'deploy to github pages'
+task :deploy do
+  Dir.chdir '../'
+  if File.exists?('web_deploy/')
+    Dir.chdir 'web_deploy/'
+    shell_exec 'git checkout gh-pages'
+    shell_exec 'git pull origin gh-pages'
+    Dir.chdir '../'
+  else
+    shell_exec 'git clone git@github.com:benben/oftesting.git web_deploy'
+    Dir.chdir 'web_deploy/'
+    shell_exec 'git checkout gh-pages'
+    Dir.chdir '../'
+  end
+  shell_exec 'cp -R oftesting/tmp/web/* web_deploy/'
+  Dir.chdir 'web_deploy/'
+  shell_exec "git commit -am 'Deploy from #{Time.now}'"
+  #shell_exec 'git push origin gh-pages'
+end
+
 desc 'create all vagrant boxes'
 task :create do
   shell_exec 'mkdir -p ../vagrant_build'
