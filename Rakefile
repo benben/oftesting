@@ -88,7 +88,7 @@ task :test do
 
     #project generator (compile)
     puts "# compiling the project generator..."
-    res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && make'
+    res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && make -j4'
     box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
 
     #project generator (run --allexamples)
@@ -103,7 +103,7 @@ task :test do
       dir = File.dirname(makefile)
       name = dir.match /[^\/]+$/
       puts "# compiling #{name}..."
-      res = shell_exec_on box['name'], "cd #{dir} && make"
+      res = shell_exec_on box['name'], "cd #{dir} && make -j4"
       box_result[:tests] << {:name => name}.merge!(res)
     end
 
