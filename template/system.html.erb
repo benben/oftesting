@@ -1,6 +1,6 @@
 <%= render 'header' %>
-  <h3><%= @name %> on <%= @system['name'].gsub('vagrant-','').gsub('-', ' ').capitalize %></h3>
-  <table>
+  <h3><a href="../../../../">Home</a> / <a href="../"><%= @name %></a> / <%= @system['name'].gsub('vagrant-','').gsub('-', ' ').capitalize %></h3>
+  <table class="table table-bordered table-striped">
     <thead>
       <tr>
         <th>Test</th>
@@ -13,7 +13,7 @@
         <tr>
           <td><a href="tests/<%= test['name'] %>/"><%= test['name'] %></a></td>
           <td class="<%= test['status'] %>"><%= test['status'] %></td>
-          <td><a href=""><i class="icon-search"></i></a></td>
+          <td><a href="tests/<%= test['name'] %>/"><i class="icon-search"></i></a></td>
         </tr>
       <% end %>
     </tbody>

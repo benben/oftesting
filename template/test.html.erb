@@ -1,5 +1,16 @@
 <%= render 'header' %>
-  <h3><%= @test['name'] %> for <%= @name %> on <%= @system['name'].gsub('vagrant-','').gsub('-', ' ').capitalize %></h3>
+  <h3>
+    <a href="../../../../../">Home</a> /
+    <a href="../../../"><%= @name %></a> /
+    <a href="../../"><%= @system['name'].gsub('vagrant-','').gsub('-', ' ').capitalize %></a> /
+    <%= @test['name'] %>
+  </h3>
+  <table style="width:50%;" class="table-bordered">
+    <tr>
+      <td><span style="font-weight:bold;">Status</a></td>
+      <td><span class="<%= @test['status'] %>"><%= @test['status'].upcase %></span></td>
+    </tr>
+  </table>
   <div class="highlight">
     <pre><%= @test['log_complete'].map{|line| line = @test['log_error'].include?(line) ? "<span class=\"line error\">#{line}</span>" : line}.join %></pre>
   </div>

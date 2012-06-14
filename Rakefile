@@ -227,6 +227,13 @@ task :generate do
         f.close
       end
     end
+
+    @result = result
+    @asset_folder = '../'*2
+
+    f = File.new("#{result_folder}index.html", 'w+')
+    f.write(render 'result')
+    f.close
   end
 
   @asset_folder = ''

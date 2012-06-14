@@ -1,4 +1,5 @@
 <%= render 'header' %>
+<h3>Home</h3>
 <% @results.each do |result| %>
   <p>
     <a href=""><i class="icon-chevron-right icon-white"></i><%= result['name'] %></a>
@@ -26,8 +27,9 @@
         <td><a href="<%= "testruns/#{result['name']}/#{result['name']}.tar.bz2" %>">Download</a> (bzipped JSON, <%= result['complete_log_file_size'] %>k)</td>
       </tr>
     </table>
+    <h3><a href="<%= "testruns/#{result['name']}/" %>">Show Details</a>
     <h3>Matrix</h3>
-    <table>
+    <table class="table table-bordered table-striped">
       <thead>
         <tr>
           <th>Operation System</th>
@@ -46,7 +48,7 @@
               <span class="badge badge-warning"><%= system['overall']['warning'] %></span>
               <span class="badge badge-important"><%= system['overall']['error'] %></span>
             </td>
-            <td><a href=""><i class="icon-search"></i></a></td>
+            <td><a href="<%= "testruns/#{result['name']}/#{system['name']}/" %>"><i class="icon-search"></i></a></td>
           </tr>
         <% end %>
       </tbody>
