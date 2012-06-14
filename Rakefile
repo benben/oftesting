@@ -158,15 +158,18 @@ task :generate do
 
   %x[rm -rf tmp/web]
   Dir.mkdir(@config['www_dir'])
+  @testrun_folder = "#{@config['www_dir']}testruns/"
+  Dir.mkdir(@testrun_folder)
   %x[cp -R template/css tmp/web/]
   %x[cp -R template/img tmp/web/]
   %x[cp -R template/js tmp/web/]
   @results = []
-  Dir["testruns/*/result.json"].each do |testrun_file|
+  Dir["testruns/*/result.json"].reverse.each do |testrun_file|
     @results << JSON.parse(File.read(testrun_file))
   end
 
   @results.each do |result|
+
     overall = {}
 
     result['systems'].each do |system|
@@ -180,7 +183,53 @@ task :generate do
     end
 
     result['overall'] = overall
+
+    result_folder = "#{@testrun_folder}#{result['name']}/"
+    Dir.mkdir(result_folder)
+
+    shell_exec "tar -cjf #{result_folder}#{result['name']}.tar.bz2 testruns/#{result['name']}"
+
+    result['complete_log_file_size'] = File.size("#{result_folder}#{result['name']}.tar.bz2") / 1024
+
+    result['systems'].each do |system|
+      overall = {}
+
+      system['tests'].each do |test|
+        if overall.has_key? test['status']
+          overall[test['status']] += 1
+        else
+          overall[test['status']] = 1
+        end
+      end
+
+      system['overall'] = overall
+
+      system_folder = "#{result_folder}#{system['name']}/"
+      Dir.mkdir(system_folder)
+
+      @asset_folder = '../'*3
+
+      @name = result['name']
+      @system = system
+      f = File.new("#{system_folder}index.html", 'w+')
+      f.write(render 'system')
+      f.close
+
+      Dir.mkdir("#{system_folder}tests")
+
+      @asset_folder = '../'*5
+      system['tests'].each do |test|
+        @test = test
+        test_folder = "#{system_folder}tests/#{test['name']}/"
+        Dir.mkdir(test_folder)
+        f = File.new("#{test_folder}index.html", 'w+')
+        f.write(render 'test')
+        f.close
+      end
+    end
   end
+
+  @asset_folder = ''
   f = File.new("#{@config['www_dir']}index.html", 'w+')
   f.write(render 'index')
   f.close

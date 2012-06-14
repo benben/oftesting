@@ -1,155 +1,21 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>openFrameworks testing</title>
-    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../css/styles.css">
-    <link rel="stylesheet" href="../../../css/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>openFrameworks testing</h1>
-        <p>automatic cross-platform testing suite for openframeworks</p>
-      </header>
-      <section id="content">
-        <h3>Testrun for db28c684dc0d2e7a5c782b2bf4dc30ea85f2b383 on Fedora 16 Gnome 32bit</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Test</th>
-              <th>Status</th>
-              <th>Result</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><a href="tests/install_codecs.sh/">install_codecs.sh</a></td>
-              <td class="passed">Passed</td>
-              <td>
-                <span class="badge badge-success">20</span>
-                <span class="badge badge-warning">12</span>
-                <span class="badge badge-important">1</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-            <tr>
-              <td>install_dependencies.sh</td>
-              <td class="passed">Passed</td>
-              <td>
-                <span class="badge badge-success">25</span>
-                <span class="badge badge-warning">20</span>
-                <span class="badge badge-important">4</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-            <tr>
-              <td>install_codeblocks.sh</td>
-              <td class="passed">Passed</td>
-              <td>
-                <span class="badge badge-success">30</span>
-                <span class="badge badge-warning">1</span>
-                <span class="badge badge-important">10</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-            <tr>
-              <td>remove_codeblocks.sh</td>
-              <td class="warning">Warning</td>
-              <td>
-                <span class="badge badge-success">28</span>
-                <span class="badge badge-warning">30</span>
-                <span class="badge badge-important">5</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-            <tr>
-              <td>projectGenerator</td>
-              <td class="passed">Passed</td>
-              <td>
-                <span class="badge badge-success">28</span>
-                <span class="badge badge-warning">30</span>
-                <span class="badge badge-important">5</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-            <tr>
-              <td>imageLoaderExample</td>
-              <td class="warning">Warning</td>
-              <td>
-                <span class="badge badge-success">28</span>
-                <span class="badge badge-warning">30</span>
-                <span class="badge badge-important">5</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-            <tr>
-              <td>imageSequenceExample</td>
-              <td class="error">Error</td>
-              <td>
-                <span class="badge badge-success">28</span>
-                <span class="badge badge-warning">30</span>
-                <span class="badge badge-important">5</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-            <tr>
-              <td>imageCompressionExample</td>
-              <td class="error">Error</td>
-              <td>
-                <span class="badge badge-success">28</span>
-                <span class="badge badge-warning">30</span>
-                <span class="badge badge-important">5</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-            <tr>
-              <td>color</td>
-              <td class="passed">Passed</td>
-              <td>
-                <span class="badge badge-success">28</span>
-                <span class="badge badge-warning">30</span>
-                <span class="badge badge-important">5</span>
-              </td>
-              <td><a href=""><i class="icon-search"></i></a></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
-      </footer>
-    </div>
-    <script src="../../../js/scale.fix.js"></script>
-    <script src="../../../js/jquery-1.7.2.min.js"></script>
-    <script src="../../../js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-      $(function (){
-        $('#content p a').each(function(){
-          if ($(this).parent().next().is(":visible")) {
-            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
-          };
-        });
-        $('#content p a').click(function(ev){
-          ev.preventDefault();
-          if ($(this).parent().next().is(":visible")) {
-            console.log('collapse!');
-            $(this).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-right');
-            $(this).parent().next().hide();
-          } else {
-            console.log('expand!');
-            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
-            $(this).parent().next().show();
-          }
-        });
-      });
-    </script>
-  </body>
-</html>
+<%= render 'header' %>
+  <h3><%= @name %> on <%= @system['name'].gsub('vagrant-','').gsub('-', ' ').capitalize %></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Test</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @system['tests'].each do |test| %>
+        <tr>
+          <td><a href="tests/<%= test['name'] %>/"><%= test['name'] %></a></td>
+          <td class="<%= test['status'] %>"><%= test['status'] %></td>
+          <td><a href=""><i class="icon-search"></i></a></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<%= render 'footer' %>

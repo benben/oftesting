@@ -7,7 +7,7 @@
     <span class="badge badge-warning"><%= result['overall']['warning'] %></span>
     <span class="badge badge-important"><%= result['overall']['error'] %></span>
   </p>
-  <div>
+  <div class="testrun_desc">
     <table>
       <tr>
         <td>Start time:</td>
@@ -23,7 +23,7 @@
       </tr>
       <tr>
         <td>Complete log:</td>
-        <td><a href="">Download</a> (bzip2, 104k)</td>
+        <td><a href="<%= "testruns/#{result['name']}/#{result['name']}.tar.bz2" %>">Download</a> (bzipped JSON, <%= result['complete_log_file_size'] %>k)</td>
       </tr>
     </table>
     <h3>Matrix</h3>
@@ -36,42 +36,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><a href="testruns/db28c684dc0d2e7a5c782b2bf4dc30ea85f2b383/vagrant-fedora16-gnome-32bit">vagrant-fedora16-gnome-32bit</a></td>
-          <td>
-            <span class="badge badge-success">20</span>
-            <span class="badge badge-warning">12</span>
-            <span class="badge badge-important">1</span>
-          </td>
-          <td><a href=""><i class="icon-search"></i></a></td>
-        </tr>
-        <tr>
-          <td>vagrant-ubuntu-12.04-32bit</td>
-          <td>
-            <span class="badge badge-success">25</span>
-            <span class="badge badge-warning">20</span>
-            <span class="badge badge-important">4</span>
-          </td>
-          <td><a href=""><i class="icon-search"></i></a></td>
-        </tr>
-        <tr>
-          <td>vagrant-archlinux-gnome-32bit</td>
-          <td>
-            <span class="badge badge-success">30</span>
-            <span class="badge badge-warning">1</span>
-            <span class="badge badge-important">10</span>
-          </td>
-          <td><a href=""><i class="icon-search"></i></a></td>
-        </tr>
-        <tr>
-          <td>vagrant-debian6.0.5-gnome-32bit</td>
-          <td>
-            <span class="badge badge-success">28</span>
-            <span class="badge badge-warning">30</span>
-            <span class="badge badge-important">5</span>
-          </td>
-          <td><a href=""><i class="icon-search"></i></a></td>
-        </tr>
+        <% result['systems'].each do |system| %>
+          <tr>
+            <td>
+              <a href="<%= "testruns/#{result['name']}/#{system['name']}/" %>"><%= system['name'] %></a>
+            </td>
+            <td>
+              <span class="badge badge-success"><%= system['overall']['passed'] %></span>
+              <span class="badge badge-warning"><%= system['overall']['warning'] %></span>
+              <span class="badge badge-important"><%= system['overall']['error'] %></span>
+            </td>
+            <td><a href=""><i class="icon-search"></i></a></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
