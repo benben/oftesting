@@ -237,3 +237,11 @@ footer {
   font-family: monospace;
   font-size: 80%;
 }
+
+div.testrun_desc {
+  display: none;
+}
+
+span.line.error {
+  color: red;
+}

@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>openFrameworks testing</title>
+    <link rel="stylesheet" href="../../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../../css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>openFrameworks testing</h1>
+        <p>automatic cross-platform testing suite for openframeworks</p>
+      </header>
+      <section id="content">
+
+  <h3>install_codecs.sh for run_2012-06-14_180001 on Archlinux gnome 32bit</h3>
+  <div class="highlight">
+    <pre>:: Synchronizing package databases...
+ core is up to date
+ extra is up to date
+ community is up to date
+resolving dependencies...
+looking for inter-conflicts...
+
+Targets (12): a52dec-0.7.4-6  gstreamer0.10-ugly-0.10.19-1  lame-3.99.5-1  libdvdread-4.2.0-1  libmad-0.15.1b-6  libmpeg2-0.5.1-3  libsidplay-1.36.59-5  opencore-amr-0.1.3-1  x264-20120204-1  gstreamer0.10-ffmpeg-0.10.13-1  gstreamer0.10-ugly-plugins-0.10.19-1  mpg123-1.14.2-1
+
+Total Download Size:    3.97 MiB
+Total Installed Size:   13.73 MiB
+
+Proceed with installation? [Y/n] 
+:: Retrieving packages from extra...
+downloading mpg123-1.14.2-1-i686.pkg.tar.xz...
+downloading gstreamer0.10-ugly-0.10.19-1-i686.pkg.tar.xz...
+downloading libdvdread-4.2.0-1-i686.pkg.tar.xz...
+downloading lame-3.99.5-1-i686.pkg.tar.xz...
+downloading libmpeg2-0.5.1-3-i686.pkg.tar.xz...
+downloading a52dec-0.7.4-6-i686.pkg.tar.xz...
+downloading libmad-0.15.1b-6-i686.pkg.tar.xz...
+downloading libsidplay-1.36.59-5-i686.pkg.tar.xz...
+downloading x264-20120204-1-i686.pkg.tar.xz...
+downloading opencore-amr-0.1.3-1-i686.pkg.tar.xz...
+downloading gstreamer0.10-ugly-plugins-0.10.19-1-i686.pkg.tar.xz...
+downloading gstreamer0.10-ffmpeg-0.10.13-1-i686.pkg.tar.xz...
+checking package integrity...
+loading package files...
+checking for file conflicts...
+checking available disk space...
+installing mpg123...
+Optional dependencies for mpg123
+    sdl: for sdl audio support
+    jack: for jack audio support
+    libpulse: for pulse audio support
+installing gstreamer0.10-ugly...
+installing libdvdread...
+Optional dependencies for libdvdread
+    libdvdcss: for decoding encrypted DVDs
+installing lame...
+installing libmpeg2...
+Optional dependencies for libmpeg2
+    sdl:	requiered for mpeg2dec
+    libxv:	requiered for mpeg2dec
+installing a52dec...
+installing libmad...
+installing libsidplay...
+installing x264...
+installing opencore-amr...
+installing gstreamer0.10-ugly-plugins...
+installing gstreamer0.10-ffmpeg...
+</pre>
+  </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
+      </footer>
+    </div>
+    <script src="../../../../../js/jquery-1.7.2.min.js"></script>
+    <script src="../../../../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function (){
+        $('#content p a').click(function(ev){
+          ev.preventDefault();
+          if ($(this).parent().next().is(":visible")) {
+            console.log('collapse!');
+            $(this).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-right');
+            $(this).parent().next().hide();
+          } else {
+            console.log('expand!');
+            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+            $(this).parent().next().show();
+          }
+        });
+
+        //expand last result
+        $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+        $('#content p a').first().parent().next().show();
+      });
+    </script>
+  </body>
+</html>
+

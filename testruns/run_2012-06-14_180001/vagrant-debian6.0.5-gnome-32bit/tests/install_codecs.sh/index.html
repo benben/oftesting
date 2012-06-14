@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>openFrameworks testing</title>
+    <link rel="stylesheet" href="../../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../../css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>openFrameworks testing</h1>
+        <p>automatic cross-platform testing suite for openframeworks</p>
+      </header>
+      <section id="content">
+
+  <h3>install_codecs.sh for run_2012-06-14_180001 on Debian6.0.5 gnome 32bit</h3>
+  <div class="highlight">
+    <pre>Reading package lists...
+Building dependency tree...
+Reading state information...
+gstreamer0.10-plugins-ugly is already the newest version.
+gstreamer0.10-plugins-ugly set to manually installed.
+The following NEW packages will be installed:
+  libmpg123-0 libmpg123-dev
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+Need to get 345 kB of archives.
+After this operation, 971 kB of additional disk space will be used.
+Get:1 http://ftp.tu-chemnitz.de/pub/linux/debian/debian/ squeeze/main libmpg123-0 i386 1.12.1-3 [148 kB]
+Get:2 http://ftp.tu-chemnitz.de/pub/linux/debian/debian/ squeeze/main libmpg123-dev i386 1.12.1-3 [197 kB]
+<span class="line error">dpkg-preconfigure: unable to re-open stdin: 
+</span>Fetched 345 kB in 0s (375 kB/s)
+Selecting previously deselected package libmpg123-0.
+(Reading database ... 127851 files and directories currently installed.)
+Unpacking libmpg123-0 (from .../libmpg123-0_1.12.1-3_i386.deb) ...
+Selecting previously deselected package libmpg123-dev.
+Unpacking libmpg123-dev (from .../libmpg123-dev_1.12.1-3_i386.deb) ...
+Setting up libmpg123-0 (1.12.1-3) ...
+Setting up libmpg123-dev (1.12.1-3) ...
+</pre>
+  </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
+      </footer>
+    </div>
+    <script src="../../../../../js/jquery-1.7.2.min.js"></script>
+    <script src="../../../../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function (){
+        $('#content p a').click(function(ev){
+          ev.preventDefault();
+          if ($(this).parent().next().is(":visible")) {
+            console.log('collapse!');
+            $(this).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-right');
+            $(this).parent().next().hide();
+          } else {
+            console.log('expand!');
+            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+            $(this).parent().next().show();
+          }
+        });
+
+        //expand last result
+        $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+        $('#content p a').first().parent().next().show();
+      });
+    </script>
+  </body>
+</html>
+
