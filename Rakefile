@@ -185,3 +185,16 @@ task :generate do
   f.write(render 'index')
   f.close
 end
+
+desc 'create all vagrant boxes'
+task :create do
+  shell_exec 'mkdir -p ../vagrant_build'
+  Dir.chdir '../vagrant_build'
+  @config['boxes'].each do |box|
+    name = box['name']
+    shell_exec "rm -f #{name}.box Vagrantfile"
+    shell_exec "vagrant package --base #{name} --output #{name}.box"
+    shell_exec "vagrant box remove #{name}"
+    shell_exec "vagrant box add #{name} #{name}.box"
+  end
+end
