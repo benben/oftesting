@@ -24,15 +24,18 @@ def shell_exec command
         end
         $stdout.write line
       end
+
+      status = 'error' if File.read('tmp/exit_code').to_i != 0
     end
   rescue Timeout::Error => e
     line = "## TIMEOUT::ERROR: Command was interrupted after #{config['script_timeout']} seconds ##\n"
     log_complete << line
     log_error << line
+    status = 'error'
     $stdout.write line.red
   end
 
-  status = 'error' if File.read('tmp/exit_code').to_i != 0
+
 
   File.delete('tmp/errorlog')
   File.delete('tmp/exit_code')
