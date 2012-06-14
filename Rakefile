@@ -251,8 +251,9 @@ task :deploy do
   end
   shell_exec 'cp -R oftesting/tmp/web/* web_deploy/'
   Dir.chdir 'web_deploy/'
+  shell_exec 'git add .'
   shell_exec "git commit -am 'Deploy from #{Time.now}'"
-  #shell_exec 'git push origin gh-pages'
+  shell_exec 'git push origin gh-pages'
 end
 
 desc 'create all vagrant boxes'
