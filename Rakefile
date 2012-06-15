@@ -164,7 +164,7 @@ task :generate do
   %x[cp -R template/img tmp/web/]
   %x[cp -R template/js tmp/web/]
   @results = []
-  Dir["testruns/*/result.json"].reverse.each do |testrun_file|
+  Dir["testruns/*/result.json"].each do |testrun_file|
     @results << JSON.parse(File.read(testrun_file))
   end
 
