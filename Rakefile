@@ -163,9 +163,11 @@ task :generate do
   %x[cp -R template/img tmp/web/]
   %x[cp -R template/js tmp/web/]
   @results = []
-  Dir["testruns/*/result.json"].each do |testrun_file|
+  Dir["testruns/*/result.json"].reverse.each do |testrun_file|
     @results << JSON.parse(File.read(testrun_file))
   end
+
+  prev_overall = {}
 
   @results.each do |result|
 
@@ -182,6 +184,7 @@ task :generate do
     end
 
     result['overall'] = overall
+    result['prev_overall'] = prev_overall
 
     result_folder = "#{@testrun_folder}#{result['name']}/"
     Dir.mkdir(result_folder)
@@ -191,17 +194,17 @@ task :generate do
     result['complete_log_file_size'] = File.size("#{result_folder}#{result['name']}.tar.bz2") / 1024
 
     result['systems'].each do |system|
-      overall = {}
+      sys_overall = {}
 
       system['tests'].each do |test|
-        if overall.has_key? test['status']
-          overall[test['status']] += 1
+        if sys_overall.has_key? test['status']
+          sys_overall[test['status']] += 1
         else
-          overall[test['status']] = 1
+          sys_overall[test['status']] = 1
         end
       end
 
-      system['overall'] = overall
+      system['overall'] = sys_overall
 
       system_folder = "#{result_folder}#{system['name']}/"
       Dir.mkdir(system_folder)
@@ -233,6 +236,8 @@ task :generate do
     f = File.new("#{result_folder}index.html", 'w+')
     f.write(render 'result')
     f.close
+
+    prev_overall = overall
   end
 
   @asset_folder = ''

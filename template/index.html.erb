@@ -1,10 +1,11 @@
 <%= render 'header' %>
 <h3>Home</h3>
-<% @results.each do |result| %>
+<% @results.reverse.each do |result| %>
   <p>
     <a href=""><i class="icon-chevron-right icon-white"></i><%= result['name'] %></a>
     on <%= result['commit'] %>
     <span class="badge badge-success"><%= result['overall']['passed'] %></span>
+    <span class=""><%= "(#{result['overall']['passed'] - result['prev_overall']['passed']})" if result['prev_overall']['passed'] %>
     <span class="badge badge-warning"><%= result['overall']['warning'] %></span>
     <span class="badge badge-important"><%= result['overall']['error'] %></span>
   </p>
