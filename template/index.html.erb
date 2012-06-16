@@ -1,7 +1,7 @@
 <%= render 'header' %>
 <h3>Home</h3>
 <% @results.reverse.each do |result| %>
-  <p>
+  <p class="dropdown">
     <a href=""><i class="icon-chevron-right icon-white"></i><%= result['name'] %></a>
     on <%= result['commit'] %>
     <span class="badge badge-success"><%= result['overall']['passed'] %></span>
@@ -42,7 +42,7 @@
         <% result['systems'].each do |system| %>
           <tr>
             <td>
-              <a href="<%= "testruns/#{result['name']}/#{system['name']}/" %>"><%= system['name'] %></a>
+              <a href="<%= "testruns/#{result['name']}/#{system['name']}/" %>"><%= system['name'].gsub('vagrant-','').gsub('-', ' ').capitalize %></a>
             </td>
             <td>
               <span class="badge badge-success"><%= system['overall']['passed'] %></span>
