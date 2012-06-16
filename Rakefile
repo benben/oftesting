@@ -13,7 +13,6 @@ def shell_exec command, timeout=0
   log_error = []
 
   begin
-    timeout = timeout != 0 ? timeout : @config['command_timeout']
     Timeout::timeout(timeout) do
       # running the command, writing exit code to tmp/exit_code, writing all errors to tmp/errorlog, piping everything to stdout
       stdin, stdout, stderr, wait_thr = Open3.popen3("((#{command}; echo $? > #{path}/tmp/exit_code) 2>&1 1>&3 | tee #{path}/tmp/errorlog ) 3>&1")
