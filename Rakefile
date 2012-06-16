@@ -55,6 +55,60 @@ def render name
 end
 
 result = {}
+result[:systems] = []
+
+def run_on_linux box
+  box_result = {:name => box['name']}
+  box_result[:tests] = []
+  puts "# running pre command..."
+  shell_exec_on box['name'], "#{box['pre_command']}"
+
+  #install scripts
+  box['install_scripts'].each do |script|
+    puts "# running #{script}.."
+    res = shell_exec_on box['name'], "cd /vagrant/of/scripts/linux/#{box['distro']} && sudo ./#{script}", 1200
+    box_result[:tests] << {:name => script}.merge!(res)
+  end
+
+  #project generator (compile)
+  puts "# compiling the project generator..."
+  res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && make -j4'
+  box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
+
+  #project generator (run --allexamples)
+  puts "# running the project generator..."
+  res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples', 120
+  box_result[:tests] << {:name => './projectGenerator --allexamples'}.merge!(res)
+
+  #examples
+  puts "## compiling all examples..."
+  Dir["#{@config['share_folder']}/of/examples/*/*/Makefile"].each do |makefile|
+    makefile.gsub!(/^share\//, '/vagrant/')
+    dir = File.dirname(makefile)
+    name = dir.match /[^\/]+$/
+    puts "# compiling #{name}..."
+    res = shell_exec_on box['name'], "cd #{dir} && make -j4"
+    box_result[:tests] << {:name => name}.merge!(res)
+  end
+
+  result[:systems] << box_result
+
+  puts '# halting the vm...'
+  shell_exec "vagrant halt #{box['name']}"
+end
+
+def run_on_osx box
+  box_result = {:name => box['name']}
+  box_result[:tests] = []
+  # puts "# starting the vm..."
+  # shell_exec "vagrant up #{box['name']}"
+
+  shell exec "scp -P 2222 -i vagrant_private_key -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no #{@config['share_folder']}* vagrant@localhost:/vagrant"
+
+  puts '# halting the vm...'
+  # running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
+  # shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
+end
 
 desc 'test everything on all VMs'
 task :test do
@@ -70,54 +124,26 @@ task :test do
     # removing all the git stuff
     shell_exec "rm -rf tmp/of_source/.git"
   end
+
   result[:commit] = File.read('tmp/commit').chomp
-  result[:systems] = []
+
   puts '## compiling on all VMs...'
   @config['boxes'].each do |box|
-    box_result = {:name => box['name']}
-    box_result[:tests] = []
     puts "# making fresh OF copy for #{box['name']}"
-    shell_exec "rm -rf #{@config['share_folder']}/of"
-    shell_exec "cp -r tmp/of_source #{@config['share_folder']}/of"
+    shell_exec "rm -rf #{@config['share_folder']}of"
+    shell_exec "cp -r tmp/of_source #{@config['share_folder']}of"
     puts "# starting the vm..."
     shell_exec "vagrant up #{box['name']}"
-    puts "# running pre command..."
-    shell_exec_on box['name'], "#{box['pre_command']}"
 
-    #install scripts
-    box['install_scripts'].each do |script|
-      puts "# running #{script}.."
-      res = shell_exec_on box['name'], "cd /vagrant/of/scripts/linux/#{box['distro']} && sudo ./#{script}", 1200
-      box_result[:tests] << {:name => script}.merge!(res)
+    if box['name'] =~ /osx/
+      run_on_osx box
+    elsif box['name'] =~ /win/
+      puts "run on win is a stub"
+    else
+      run_on_linux box
     end
-
-    #project generator (compile)
-    puts "# compiling the project generator..."
-    res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && make -j4'
-    box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
-
-    #project generator (run --allexamples)
-    puts "# running the project generator..."
-    res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples', 120
-    box_result[:tests] << {:name => './projectGenerator --allexamples'}.merge!(res)
-
-    #examples
-    puts "## compiling all examples..."
-    Dir["#{@config['share_folder']}/of/examples/*/*/Makefile"].each do |makefile|
-      makefile.gsub!(/^share\//, '/vagrant/')
-      dir = File.dirname(makefile)
-      name = dir.match /[^\/]+$/
-      puts "# compiling #{name}..."
-      res = shell_exec_on box['name'], "cd #{dir} && make -j4"
-      box_result[:tests] << {:name => name}.merge!(res)
-    end
-
-    result[:systems] << box_result
-
     puts "# deleting OF folder..."
     shell_exec "rm -rf #{@config['share_folder']}/of"
-    puts "# halting the vm..."
-    shell_exec "vagrant halt #{box['name']}"
   end
 
   puts "## generating results..."
