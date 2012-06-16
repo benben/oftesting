@@ -3,7 +3,6 @@ share_folder: share/
 www_dir: tmp/web/
 cpu_count: 4
 memory_size: 2048
-command_timeout: 600
 
 boxes:
   - name: vagrant-archlinux-gnome-32bit
