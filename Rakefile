@@ -70,6 +70,14 @@ def run_on_linux box
     box_result[:tests] << {:name => script}.merge!(res)
   end
 
+  #compiling OF lib Debug and Release
+  %w[Debug Release].each do |target|
+    puts "# compiling OF lib #{target}"
+    bit = box['name'].match(/(64)bit$/) ? '64' : ''
+    res = shell_exec_on box['name'], "cd /vagrant/of/libs/openFrameworksCompiled/project/linux#{bit}/ && make clean ; make -j4 #{target}"
+    box_result[:tests] << {:name => "OF lib #{target} compile"}.merge!(res)
+  end
+
   #project generator (compile)
   puts "# compiling the project generator..."
   res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && make -j4'
