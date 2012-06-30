@@ -117,6 +117,7 @@ def run_on_osx box
   shell_exec "scp -P 2222 -i vagrant_private_key -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no #{@config['share_folder']}of/ vagrant@localhost:/vagrant/of"
 
   #compiling OF lib
+  # TODO: COMPILE FOR RELEASE AND DEBUG SEPERATELY
   puts "# compiling OF lib"
   res = shell_exec_on box['name'], "cd /vagrant/of/libs/openFrameworksCompiled/project/osx/ && xcodebuild -alltargets -parallelizeTargets", 600
   box_result[:tests] << {:name => "OF lib compile"}.merge!(res)
@@ -222,23 +223,28 @@ task :generate do
   %x[cp -R template/img tmp/web/]
   %x[cp -R template/js tmp/web/]
   @results = []
-  Dir["testruns/*/result.json"].reverse.each do |testrun_file|
+  Dir["testruns/*/result.json"].sort.each do |testrun_file|
     @results << JSON.parse(File.read(testrun_file))
   end
 
   prev_overall = {}
 
+
   @results.each do |result|
 
     overall = {}
+    result['test_names'] = []
 
     result['systems'].each do |system|
+      system['pretty_name'] = @config['boxes'].map{|sys| sys['pretty_name'] if sys['name'] == system['name']}.compact[0]
       system['tests'].each do |test|
         if overall.has_key? test['status']
           overall[test['status']] += 1
         else
           overall[test['status']] = 1
         end
+
+        result['test_names'] << test['name'] unless result['test_names'].include? test['name']
       end
     end
 
@@ -288,6 +294,8 @@ task :generate do
         f.close
       end
     end
+
+    result['systems'].sort!{|a,b| a['pretty_name'] <=> b['pretty_name']}
 
     @result = result
     @asset_folder = '../'*2
