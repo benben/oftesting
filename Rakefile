@@ -54,8 +54,8 @@ def render name
   ERB.new(File.read("template/#{name}.html.erb")).result(binding)
 end
 
-result = {}
-result[:systems] = []
+@result = {}
+@result[:systems] = []
 
 def run_on_linux box
   box_result = {:name => box['name']}
@@ -99,7 +99,7 @@ def run_on_linux box
     box_result[:tests] << {:name => name}.merge!(res)
   end
 
-  result[:systems] << box_result
+  @result[:systems] << box_result
 
   puts '# halting the vm...'
   shell_exec "vagrant halt #{box['name']}"
@@ -108,22 +108,45 @@ end
 def run_on_osx box
   box_result = {:name => box['name']}
   box_result[:tests] = []
-  # puts "# starting the vm..."
-  # shell_exec "vagrant up #{box['name']}"
 
-  shell exec "scp -P 2222 -i vagrant_private_key -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no #{@config['share_folder']}* vagrant@localhost:/vagrant"
+  puts '# copying OF via scp...'
+  shell_exec_on box['name'], 'rm -rf /vagrant/of'
+  shell_exec "scp -P 2222 -i vagrant_private_key -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no #{@config['share_folder']}of/ vagrant@localhost:/vagrant/of"
+
+  #compiling OF lib
+  puts "# compiling OF lib"
+  res = shell_exec_on box['name'], "cd /vagrant/of/libs/openFrameworksCompiled/project/osx/ && xcodebuild -alltargets -parallelizeTargets", 600
+  box_result[:tests] << {:name => "OF lib compile"}.merge!(res)
+
+  #project generator (compile)
+  puts "# compiling the project generator..."
+  res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && xcodebuild -alltargets -parallelizeTargets', 600
+  box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
+
+  #examples
+  puts '## compiling all examples...'
+  Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].each do |makefile|
+    makefile.gsub!(/^share\//, '/vagrant/')
+    dir = File.dirname(makefile)
+    name = dir.match /[^\/]+$/
+    puts "# compiling #{name}..."
+    res = shell_exec_on box['name'], "cd #{dir} && xcodebuild -alltargets -parallelizeTargets", 600
+    box_result[:tests] << {:name => name}.merge!(res)
+  end
+
+  @result[:systems] << box_result
 
   puts '# halting the vm...'
-  # running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
-  # shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
+  running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
+  shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
 end
 
 desc 'test everything on all VMs'
 task :test do
   start_time = Time.now
-  result[:name] = "run_#{start_time.strftime('%Y-%m-%d_%H%M%S')}"
-  result[:start_time] = start_time
-  result[:end_time] = ""
+  @result[:name] = "run_#{start_time.strftime('%Y-%m-%d_%H%M%S')}"
+  @result[:start_time] = start_time
+  @result[:end_time] = ""
   unless File.directory?("tmp/of_source")
     puts '# copying openFrameworks source'
     shell_exec "cp -r #{@config['of_source']} tmp/of_source"
@@ -133,7 +156,7 @@ task :test do
     shell_exec "rm -rf tmp/of_source/.git"
   end
 
-  result[:commit] = File.read('tmp/commit').chomp
+  @result[:commit] = File.read('tmp/commit').chomp
 
   puts '## compiling on all VMs...'
   @config['boxes'].each do |box|
@@ -155,10 +178,10 @@ task :test do
   end
 
   puts "## generating results..."
-  result[:end_time] = Time.now
-  dir_name = "testruns/#{result[:name]}"
+  @result[:end_time] = Time.now
+  dir_name = "testruns/#{@result[:name]}"
   Dir.mkdir(dir_name)
-  File.open("#{dir_name}/result.json", 'w+', encoding: Encoding::UTF_8) {|f| f.write(JSON.pretty_generate(result)) }
+  File.open("#{dir_name}/result.json", 'w+', encoding: Encoding::UTF_8) {|f| f.write(JSON.pretty_generate(@result)) }
 end
 
 desc 'clean all temporary files'
