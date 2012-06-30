@@ -177,7 +177,7 @@ footer {
   margin-top: 20px;
 }
 
-#content p {
+#content p.dropdown {
   list-style:none;
   background-color: #414141;
   background-image: -ms-linear-gradient(top, #555, #222);

@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>openFrameworks testing</title>
+    <link rel="stylesheet" href="../../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../../css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>openFrameworks testing</h1>
+        <p>automatic cross-platform testing suite for openframeworks</p>
+      </header>
+      <section id="content">
+
+  <h3>
+    <a href="../../../../../">Home</a> /
+    <a href="../../../">run_2012-06-29_234140</a> /
+    <a href="../../">Debian 6.0.5 GNOME 32bit</a> /
+    install_codeblocks.sh
+  </h3>
+  <table style="width:50%;" class="table-bordered">
+    <tr>
+      <td><span style="font-weight:bold;">Status</a></td>
+      <td><span class="error">ERROR</span></td>
+    </tr>
+  </table>
+  <div class="highlight">
+    <pre>OK
+Hit http://security.debian.org squeeze/updates Release.gpg
+Ign http://security.debian.org/ squeeze/updates/main Translation-en
+Ign http://security.debian.org/ squeeze/updates/main Translation-en_US
+Ign http://apt.jenslody.de any Release.gpg
+Ign http://apt.jenslody.de/ any/main Translation-en
+Ign http://apt.jenslody.de/ any/main Translation-en_US
+Hit http://apt.wxwidgets.org etch-wx Release.gpg
+Ign http://apt.wxwidgets.org/ etch-wx/main Translation-en
+Ign http://apt.wxwidgets.org/ etch-wx/main Translation-en_US
+Hit http://security.debian.org squeeze/updates Release
+Hit http://ftp.tu-chemnitz.de squeeze Release.gpg
+Ign http://ftp.tu-chemnitz.de/pub/linux/debian/debian/ squeeze/main Translation-en
+Ign http://apt.jenslody.de any Release
+Hit http://apt.wxwidgets.org etch-wx Release
+Ign http://ftp.tu-chemnitz.de/pub/linux/debian/debian/ squeeze/main Translation-en_US
+Hit http://ftp.tu-chemnitz.de squeeze-updates Release.gpg
+Ign http://ftp.tu-chemnitz.de/pub/linux/debian/debian/ squeeze-updates/main Translation-en
+Ign http://ftp.tu-chemnitz.de/pub/linux/debian/debian/ squeeze-updates/main Translation-en_US
+Hit http://security.debian.org squeeze/updates/main Sources
+Hit http://ftp.tu-chemnitz.de squeeze Release
+Ign http://apt.jenslody.de any/main i386 Packages
+Hit http://apt.wxwidgets.org etch-wx/main i386 Packages
+Hit http://security.debian.org squeeze/updates/main i386 Packages
+Hit http://ftp.tu-chemnitz.de squeeze-updates Release
+Err http://apt.jenslody.de any/main i386 Packages
+  404  Not Found
+Hit http://ftp.tu-chemnitz.de squeeze/main Sources
+Hit http://ftp.tu-chemnitz.de squeeze/main i386 Packages
+Hit http://ftp.tu-chemnitz.de squeeze-updates/main Sources/DiffIndex
+Hit http://ftp.tu-chemnitz.de squeeze-updates/main i386 Packages/DiffIndex
+Hit http://ftp.tu-chemnitz.de squeeze-updates/main i386 Packages
+<span class="line error">W: Failed to fetch http://apt.jenslody.de/dists/any/main/binary-i386/Packages.gz  404  Not Found
+</span><span class="line error">
+</span><span class="line error">E: Some index files failed to download, they have been ignored, or old ones used instead.
+</span>Reading package lists...
+Building dependency tree...
+Reading state information...
+<span class="line error">E: Unable to locate package jens-lody-debian-keyring
+</span>Reading package lists...
+Building dependency tree...
+Reading state information...
+<span class="line error">E: Unable to locate package libcodeblocks0
+</span><span class="line error">E: Unable to locate package codeblocks
+</span><span class="line error">E: Unable to locate package libwxsmithlib0
+</span><span class="line error">E: Unable to locate package codeblocks-contrib
+</span></pre>
+  </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
+      </footer>
+    </div>
+    <script src="../../../../../js/jquery-1.7.2.min.js"></script>
+    <script src="../../../../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function (){
+        $('#content p a').click(function(ev){
+          ev.preventDefault();
+          if ($(this).parent().next().is(":visible")) {
+            console.log('collapse!');
+            $(this).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-right');
+            $(this).parent().next().hide();
+          } else {
+            console.log('expand!');
+            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+            $(this).parent().next().show();
+          }
+        });
+
+        //expand last result
+        $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+        $('#content p a').first().parent().next().show();
+      });
+    </script>
+  </body>
+</html>
+
