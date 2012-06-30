@@ -326,12 +326,12 @@ task :deploy do
   shell_exec 'git push origin gh-pages'
 end
 
-desc 'create all vagrant boxes'
-task :create do
+desc 'create all vagrant boxes or specify one box'
+task :create, :box do |t, args|
+  boxes = args.box ? [args.box] : @config['boxes'].map{|b| b['name']}
   shell_exec 'mkdir -p ../vagrant_build'
   Dir.chdir '../vagrant_build'
-  @config['boxes'].each do |box|
-    name = box['name']
+  boxes.each do |name|
     shell_exec "rm -f #{name}.box Vagrantfile"
     shell_exec "vagrant package --base #{name} --output #{name}.box"
     shell_exec "vagrant box remove #{name}"
