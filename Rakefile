@@ -66,7 +66,7 @@ def run_on_linux box
   #install scripts
   box['install_scripts'].each do |script|
     puts "# running #{script}.."
-    res = shell_exec_on box['name'], "cd /vagrant/of/scripts/linux/#{box['distro']} && sudo ./#{script}", 1200
+    res = shell_exec_on box['name'], "cd /vagrant/of/scripts/linux/#{box['distro']} && sudo ./#{script}", 600
     box_result[:tests] << {:name => script}.merge!(res)
   end
 
@@ -80,13 +80,13 @@ def run_on_linux box
 
   #project generator (compile)
   puts "# compiling the project generator..."
-  res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && make -j4'
+  res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && make clean ; make -j4'
   box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
 
-  #project generator (run --allexamples)
-  puts "# running the project generator..."
-  res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples', 120
-  box_result[:tests] << {:name => './projectGenerator --allexamples'}.merge!(res)
+  # #project generator (run --allexamples)
+  # puts "# running the project generator..."
+  # res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples', 120
+  # box_result[:tests] << {:name => './projectGenerator --allexamples'}.merge!(res)
 
   #examples
   puts "## compiling all examples..."
@@ -166,12 +166,12 @@ task :test do
     puts "# making fresh OF copy for #{box['name']}"
     shell_exec "rm -rf #{@config['share_folder']}of"
     shell_exec "cp -r tmp/of_source #{@config['share_folder']}of"
-    puts "# starting the vm..."
+    puts '# starting the vm...'
     shell_exec "vagrant up #{box['name']}"
 
-    if box['name'] =~ /osx/
+    if box['distro'] =~ /osx/
       run_on_osx box
-    elsif box['name'] =~ /win/
+    elsif box['distro'] =~ /win/
       puts "run on win is a stub"
     else
       run_on_linux box
@@ -213,7 +213,6 @@ end
 desc 'generate web pages'
 task :generate do
   require 'date'
-
 
   %x[rm -rf tmp/web]
   Dir.mkdir(@config['www_dir'])

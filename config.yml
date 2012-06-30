@@ -5,22 +5,8 @@ cpu_count: 4
 memory_size: 2048
 
 boxes:
-  - name: vagrant-archlinux-gnome-32bit
-    distro: 'archlinux'
-    pre_command: 'sudo pacman -Syu --noprogressbar --needed --noconfirm'
-    install_scripts:
-      - 'install_codecs.sh'
-      - 'install_dependencies.sh'
-      - 'install_codeblocks.sh'
-      - 'remove_codeblocks.sh'
-  - name: vagrant-debian6.0.5-gnome-32bit
-    distro: 'debian'
-    pre_command: 'sudo apt-get update -y && sudo apt-get dist-upgrade -y'
-    install_scripts:
-      - 'install_codecs.sh'
-      - 'install_dependencies.sh'
-      - 'install_codeblocks.sh'
-      - 'remove_codeblocks.sh'
+  - name: vagrant-osx-10.6.2
+    distro: 'osx'
   - name: 'vagrant-fedora16-gnome-32bit'
     distro: 'fedora' #name of distro folder in of/scripts
     pre_command: 'sudo yum update -y'
@@ -37,3 +23,27 @@ boxes:
       - 'install_dependencies.sh'
       - 'install_codeblocks.sh'
       - 'remove_codeblocks.sh'
+  - name: vagrant-archlinux-gnome-32bit
+    distro: 'archlinux'
+    pre_command: 'sudo pacman -Syu --noprogressbar --needed --noconfirm'
+    install_scripts:
+      - 'install_codecs.sh'
+      - 'install_dependencies.sh'
+      - 'install_codeblocks.sh'
+      - 'remove_codeblocks.sh'
+  - name: vagrant-debian6.0.5-gnome-32bit
+    distro: 'debian'
+    pre_command: 'sudo apt-get update -y && sudo apt-get dist-upgrade -y'
+    install_scripts:
+      - 'install_codecs.sh'
+      - 'install_dependencies.sh'
+      - 'install_codeblocks.sh'
+      - 'remove_codeblocks.sh'
+  # - name: vagrant-ubuntu-12.04-64bit
+  #   distro: 'ubuntu'
+  #   pre_command: 'sudo apt-get update -y && sudo apt-get dist-upgrade -y'
+  #   install_scripts:
+  #     - 'install_codecs.sh'
+  #     - 'install_dependencies.sh'
+  #     - 'install_codeblocks.sh'
+  #     - 'remove_codeblocks.sh'
