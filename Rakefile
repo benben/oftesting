@@ -101,6 +101,9 @@ def run_on_linux box
 
   @result[:systems] << box_result
 
+  puts '# running vbguestaddition update...'
+  shell_exec "vagrant vbguest -f #{box['name']}"
+
   puts '# halting the vm...'
   shell_exec "vagrant halt #{box['name']}"
 end

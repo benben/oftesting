@@ -30,6 +30,8 @@ GEM
       log4r (~> 1.1.9)
       net-scp (~> 1.0.4)
       net-ssh (~> 2.2.2)
+    vagrant-vbguest (0.3.2)
+      vagrant (>= 0.9.4)
 
 PLATFORMS
   ruby
@@ -40,3 +42,4 @@ DEPENDENCIES
   rake
   time_diff
   vagrant (~> 1.0.3)
+  vagrant-vbguest
