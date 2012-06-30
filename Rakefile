@@ -154,7 +154,7 @@ task :test do
     puts '# copying openFrameworks source'
     shell_exec "cp -r #{@config['of_source']} tmp/of_source"
     # saving the last commit sha
-    shell_exec "cd tmp/of_source && git rev-parse HEAD > ../commit && cd -"
+    shell_exec "cd tmp/of_source && git rev-parse upstream/develop > ../commit && cd -"
     # removing all the git stuff
     shell_exec "rm -rf tmp/of_source/.git"
   end
