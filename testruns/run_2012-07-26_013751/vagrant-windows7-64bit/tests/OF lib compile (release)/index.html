@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>openFrameworks testing</title>
+    <link rel="stylesheet" href="../../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../../css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>openFrameworks testing</h1>
+        <p>automatic cross-platform testing suite for openframeworks</p>
+      </header>
+      <section id="content">
+
+  <h3>
+    <a href="../../../../../">Home</a> /
+    <a href="../../../">run_2012-07-26_013751</a> /
+    <a href="../../">Windows 7 Professional 64bit</a> /
+    OF lib compile (release)
+  </h3>
+  <table style="width:50%;" class="table-bordered">
+    <tr>
+      <td><span style="font-weight:bold;">Status</a></td>
+      <td><span class="passed">PASSED</span></td>
+    </tr>
+  </table>
+  <div class="highlight">
+    <pre>-------------- Clean: release in openFrameworksLib ---------------
+-------------- Build: release in openFrameworksLib ---------------
+Compiling: ..\..\..\openFrameworks\3d\of3dUtils.cpp
+Compiling: ..\..\..\openFrameworks\3d\ofCamera.cpp
+Compiling: ..\..\..\openFrameworks\3d\ofEasyCam.cpp
+Compiling: ..\..\..\openFrameworks\3d\ofMesh.cpp
+Compiling: ..\..\..\openFrameworks\3d\ofNode.cpp
+Compiling: ..\..\..\openFrameworks\app\ofAppGlutWindow.cpp
+Compiling: ..\..\..\openFrameworks\app\ofAppRunner.cpp
+Compiling: ..\..\..\openFrameworks\communication\ofArduino.cpp
+Compiling: ..\..\..\openFrameworks\communication\ofSerial.cpp
+Compiling: ..\..\..\openFrameworks\events\ofEvents.cpp
+Compiling: ..\..\..\openFrameworks\gl\ofFbo.cpp
+Compiling: ..\..\..\openFrameworks\gl\ofGLRenderer.cpp
+Compiling: ..\..\..\openFrameworks\gl\ofLight.cpp
+Compiling: ..\..\..\openFrameworks\gl\ofMaterial.cpp
+Compiling: ..\..\..\openFrameworks\gl\ofShader.cpp
+Compiling: ..\..\..\openFrameworks\gl\ofTexture.cpp
+Compiling: ..\..\..\openFrameworks\gl\ofVbo.cpp
+Compiling: ..\..\..\openFrameworks\gl\ofVboMesh.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofBitmapFont.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofCairoRenderer.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofGraphics.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofImage.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofPath.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofPixels.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofPolyline.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofTessellator.cpp
+Compiling: ..\..\..\openFrameworks\graphics\ofTrueTypeFont.cpp
+Compiling: ..\..\..\openFrameworks\math\ofMath.cpp
+Compiling: ..\..\..\openFrameworks\math\ofMatrix3x3.cpp
+Compiling: ..\..\..\openFrameworks\math\ofMatrix4x4.cpp
+Compiling: ..\..\..\openFrameworks\math\ofQuaternion.cpp
+Compiling: ..\..\..\openFrameworks\math\ofVec2f.cpp
+Compiling: ..\..\..\openFrameworks\math\ofVec4f.cpp
+Compiling: ..\..\..\openFrameworks\sound\ofBaseSoundPlayer.cpp
+Compiling: ..\..\..\openFrameworks\sound\ofBaseSoundStream.cpp
+Compiling: ..\..\..\openFrameworks\sound\ofFmodSoundPlayer.cpp
+Compiling: ..\..\..\openFrameworks\sound\ofRtAudioSoundStream.cpp
+Compiling: ..\..\..\openFrameworks\sound\ofSoundPlayer.cpp
+Compiling: ..\..\..\openFrameworks\sound\ofSoundStream.cpp
+Compiling: ..\..\..\openFrameworks\types\ofBaseTypes.cpp
+Compiling: ..\..\..\openFrameworks\types\ofColor.cpp
+Compiling: ..\..\..\openFrameworks\types\ofPoint.cpp
+Compiling: ..\..\..\openFrameworks\types\ofRectangle.cpp
+Compiling: ..\..\..\openFrameworks\utils\ofFileUtils.cpp
+Compiling: ..\..\..\openFrameworks\utils\ofLog.cpp
+Compiling: ..\..\..\openFrameworks\utils\ofSystemUtils.cpp
+Compiling: ..\..\..\openFrameworks\utils\ofThread.cpp
+Compiling: ..\..\..\openFrameworks\utils\ofURLFileLoader.cpp
+Compiling: ..\..\..\openFrameworks\utils\ofUtils.cpp
+Compiling: ..\..\..\openFrameworks\video\ofDirectShowGrabber.cpp
+Compiling: ..\..\..\openFrameworks\video\ofQtUtils.cpp
+Compiling: ..\..\..\openFrameworks\video\ofQuickTimeGrabber.cpp
+Compiling: ..\..\..\openFrameworks\video\ofQuickTimePlayer.cpp
+Compiling: ..\..\..\openFrameworks\video\ofVideoGrabber.cpp
+Compiling: ..\..\..\openFrameworks\video\ofVideoPlayer.cpp
+Linking static library: ..\..\lib\win_cb\openFrameworks.lib
+ar.exe: creating ..\..\lib\win_cb\openFrameworks.lib
+Output size is 2,89 MB
+Process terminated with status 0 (0 minutes, 57 seconds)
+0 errors, 0 warnings
+</pre>
+  </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
+      </footer>
+    </div>
+    <script src="../../../../../js/jquery-1.7.2.min.js"></script>
+    <script src="../../../../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function (){
+        $('#content p a').click(function(ev){
+          ev.preventDefault();
+          if ($(this).parent().next().is(":visible")) {
+            console.log('collapse!');
+            $(this).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-right');
+            $(this).parent().next().hide();
+          } else {
+            console.log('expand!');
+            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+            $(this).parent().next().show();
+          }
+        });
+
+        //expand last result
+        $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+        $('#content p a').first().parent().next().show();
+      });
+    </script>
+  </body>
+</html>
+

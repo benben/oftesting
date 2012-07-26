@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>openFrameworks testing</title>
+    <link rel="stylesheet" href="../../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../../css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>openFrameworks testing</h1>
+        <p>automatic cross-platform testing suite for openframeworks</p>
+      </header>
+      <section id="content">
+
+  <h3>
+    <a href="../../../../../">Home</a> /
+    <a href="../../../">run_2012-07-26_013751</a> /
+    <a href="../../">Windows 7 Professional 64bit</a> /
+    shaderExample
+  </h3>
+  <table style="width:50%;" class="table-bordered">
+    <tr>
+      <td><span style="font-weight:bold;">Status</a></td>
+      <td><span class="passed">PASSED</span></td>
+    </tr>
+  </table>
+  <div class="highlight">
+    <pre>-------------- Clean: debug in shaderExample ---------------
+-------------- Build: debug in shaderExample ---------------
+Compiling: src\testApp.cpp
+Compiling: src\main.cpp
+Linking console executable: bin\shaderExample_DEBUG.exe
+Warning: .drectve `-defaultlib:LIBCMT ' unrecognized
+Warning: .drectve `-defaultlib:OLDNAMES ' unrecognized
+Warning: .drectve `-defaultlib:LIBCMT ' unrecognized
+Warning: .drectve `-defaultlib:OLDNAMES ' unrecognized
+Warning: .drectve `-defaultlib:LIBCMT ' unrecognized
+Warning: .drectve `-defaultlib:OLDNAMES ' unrecognized
+Warning: .drectve `-defaultlib:LIBCMT ' unrecognized
+Warning: .drectve `-defaultlib:OLDNAMES ' unrecognized
+Warning: .drectve `-defaultlib:LIBCMT ' unrecognized
+Warning: .drectve `-defaultlib:OLDNAMES ' unrecognized
+Warning: .drectve `-defaultlib:uuid.lib ' unrecognized
+Warning: .drectve `-defaultlib:uuid.lib ' unrecognized
+Warning: .drectve `-defaultlib:LIBCMT ' unrecognized
+Warning: .drectve `-defaultlib:OLDNAMES ' unrecognized
+Warning: .drectve `-defaultlib:LIBCMT ' unrecognized
+Warning: .drectve `-defaultlib:OLDNAMES ' unrecognized
+Warning: .drectve `/DEFAULTLIB:"LIBCMT" /DEFAULTLIB:"OLDNAMES" ' unrecognized
+Running project post-build steps
+xcopy /e /i /y "C:\cygwin\vagrant\of\examples\gl\shaderExample\..\..\..\export\win_cb\*.dll"  "C:\cygwin\vagrant\of\examples\gl\shaderExample\bin"
+C:\cygwin\vagrant\of\examples\gl\shaderExample\..\..\..\export\win_cb\fmodex.dll
+C:\cygwin\vagrant\of\examples\gl\shaderExample\..\..\..\export\win_cb\FreeImage.dll
+C:\cygwin\vagrant\of\examples\gl\shaderExample\..\..\..\export\win_cb\glut.dll
+C:\cygwin\vagrant\of\examples\gl\shaderExample\..\..\..\export\win_cb\libassimp.dll
+C:\cygwin\vagrant\of\examples\gl\shaderExample\..\..\..\export\win_cb\libfreetype-6.dll
+C:\cygwin\vagrant\of\examples\gl\shaderExample\..\..\..\export\win_cb\qtmlClient.dll
+C:\cygwin\vagrant\of\examples\gl\shaderExample\..\..\..\export\win_cb\zlib1.dll
+7 Datei(en) kopiert
+cmd /c if not exist "C:\cygwin\vagrant\of\examples\gl\shaderExample\bin/data" mkdir "C:\cygwin\vagrant\of\examples\gl\shaderExample\bin/data"
+Process terminated with status 0 (0 minutes, 5 seconds)
+0 errors, 17 warnings
+</pre>
+  </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
+      </footer>
+    </div>
+    <script src="../../../../../js/jquery-1.7.2.min.js"></script>
+    <script src="../../../../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function (){
+        $('#content p a').click(function(ev){
+          ev.preventDefault();
+          if ($(this).parent().next().is(":visible")) {
+            console.log('collapse!');
+            $(this).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-right');
+            $(this).parent().next().hide();
+          } else {
+            console.log('expand!');
+            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+            $(this).parent().next().show();
+          }
+        });
+
+        //expand last result
+        $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+        $('#content p a').first().parent().next().show();
+      });
+    </script>
+  </body>
+</html>
+
