@@ -5,6 +5,18 @@ cpu_count: 4
 memory_size: 2048
 
 boxes:
+  - name: vagrant-archlinux-gnome-32bit
+    distro: 'archlinux'
+    pre_command: 'sudo pacman -Syu --noprogressbar --needed --noconfirm'
+    install_scripts:
+      - 'install_codecs.sh'
+      - 'install_dependencies.sh'
+      - 'install_codeblocks.sh'
+      - 'remove_codeblocks.sh'
+    pretty_name: 'Arch Linux GNOME 32bit'
+  - name: vagrant-windows7-64bit
+    distro: 'win'
+    pretty_name: 'Windows 7 Professional 64bit'
   - name: vagrant-osx-10.6.2
     distro: 'osx'
     pretty_name: 'Mac OS X 10.6.2'
@@ -26,15 +38,6 @@ boxes:
       - 'install_codeblocks.sh'
       - 'remove_codeblocks.sh'
     pretty_name: 'Ubuntu 12.04 32bit'
-  - name: vagrant-archlinux-gnome-32bit
-    distro: 'archlinux'
-    pre_command: 'sudo pacman -Syu --noprogressbar --needed --noconfirm'
-    install_scripts:
-      - 'install_codecs.sh'
-      - 'install_dependencies.sh'
-      - 'install_codeblocks.sh'
-      - 'remove_codeblocks.sh'
-    pretty_name: 'Arch Linux GNOME 32bit'
   - name: vagrant-debian6.0.5-gnome-32bit
     distro: 'debian'
     pre_command: 'sudo apt-get update -y && sudo apt-get dist-upgrade -y'

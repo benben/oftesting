@@ -54,10 +54,49 @@ def render name
   ERB.new(File.read("template/#{name}.html.erb")).result(binding)
 end
 
-@result = {}
-@result[:systems] = []
+@result = {systems: []}
+
+def run_on_win box
+  puts "## running #{box['name']} as WINDOWS..."
+  box_result = {:name => box['name']}
+  box_result[:tests] = []
+
+  puts '# copying OF via scp...'
+  shell_exec_on box['name'], 'rm -rf /vagrant/of'
+  shell_exec_on box['name'], 'mkdir -p /vagrant'
+  shell_exec "scp -P 2222 -i vagrant_private_key -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no #{@config['share_folder']}of/ vagrant@localhost:/vagrant/of"
+
+  #compiling OF lib
+  %w[debug release].each do |target|
+    puts "# compiling OF lib for #{target}"
+    res = shell_exec_on box['name'], "cd /vagrant/of/libs/openFrameworksCompiled/project/win_cb/ && codeblocks.exe /na /nd /ns /nc /d --rebuild --target=#{target} openFrameworksLib.cbp", 240
+    box_result[:tests] << {:name => "OF lib compile (#{target})"}.merge!(res)
+  end
+
+  # examples
+  puts '## compiling all examples...'
+  Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].each do |makefile|
+    makefile.gsub!(/^share\//, '/vagrant/')
+    dir = File.dirname(makefile)
+    name = dir.match /[^\/]+$/
+    puts "# compiling #{name}..."
+    if shell_exec_on(box['name'], "cd #{dir} && test -e #{name}.cbp", 100)[:status] == "passed"
+      res = shell_exec_on box['name'], "cd #{dir} && codeblocks.exe /na /nd /ns /nc /d --rebuild --target=debug #{name}.cbp", 300
+      box_result[:tests] << {:name => name}.merge!(res)
+    else
+      box_result[:tests] << {:name => name}.merge!({status: "error", log_complete: ["Couldn't find cbp projectfile #{name}.cbp in #{dir}"], :log_error=>["Couldn't find cbp projectfile #{name}.cbp in #{dir}"]})
+    end
+  end
+
+  @result[:systems] << box_result
+
+  puts '# halting the vm...'
+  running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
+  shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
+end
 
 def run_on_linux box
+  puts "## running #{box['name']} as LINUX..."
   box_result = {:name => box['name']}
   box_result[:tests] = []
   puts "# running pre command..."
@@ -109,6 +148,7 @@ def run_on_linux box
 end
 
 def run_on_osx box
+  puts "## running #{box['name']} as OSX..."
   box_result = {:name => box['name']}
   box_result[:tests] = []
 
@@ -173,7 +213,7 @@ task :test do
     if box['distro'] =~ /osx/
       run_on_osx box
     elsif box['distro'] =~ /win/
-      puts "run on win is a stub"
+      run_on_win box
     else
       run_on_linux box
     end
@@ -345,4 +385,11 @@ task :create, :box do |t, args|
     shell_exec "vagrant box remove #{name}"
     shell_exec "vagrant box add #{name} #{name}.box"
   end
+end
+
+desc 'halt all running boxes with Virtualbox'
+task :halt do
+  puts '# halting the vm...'
+  running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
+  shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
 end
