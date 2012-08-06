@@ -245,3 +245,7 @@ div.testrun_desc {
 span.line.error {
   color: red;
 }
+
+.btn {
+  font:14px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

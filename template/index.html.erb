@@ -12,25 +12,34 @@
     <span class=""><%= result_diff(result['overall']['error'], result['prev_overall']['error']) %>
   </p>
   <div class="testrun_desc">
-    <table>
-      <tr>
-        <td>Start time:</td>
-        <td><%= DateTime.parse(result['start_time']).strftime("%d.%m.%Y %H:%M:%S") %></td>
-      </tr>
-      <tr>
-        <td>Duration:</td>
-        <td><%= time_diff(result['start_time'],result['end_time']) %></td>
-      </tr>
-      <tr>
-        <td>Commit:</td>
-        <td><a href="https://github.com/openframeworks/openFrameworks/commit/<%= result['commit'] %>"><%= result['commit'] %></a> (develop)</td>
-      </tr>
-      <tr>
-        <td>Complete log:</td>
-        <td><a href="<%= "testruns/#{result['name']}/#{result['name']}.tar.bz2" %>">Download</a> (bzipped JSON, <%= result['complete_log_file_size'] %>k)</td>
-      </tr>
-    </table>
-    <h3><a href="<%= "testruns/#{result['name']}/" %>">Show Details</a>
+    <div class="row">
+      <div class="span8">
+        <table>
+          <tr>
+            <td>Start time:</td>
+            <td><%= DateTime.parse(result['start_time']).strftime("%d.%m.%Y %H:%M:%S") %></td>
+          </tr>
+          <tr>
+            <td>Duration:</td>
+            <td><%= time_diff(result['start_time'],result['end_time']) %></td>
+          </tr>
+          <tr>
+            <td>Commit:</td>
+            <td><a href="https://github.com/openframeworks/openFrameworks/commit/<%= result['commit'] %>"><%= result['commit'] %></a> (develop)</td>
+          </tr>
+          <tr>
+            <td>Complete log:</td>
+            <td><a href="<%= "testruns/#{result['name']}/#{result['name']}.tar.bz2" %>">Download</a> (bzipped JSON, <%= result['complete_log_file_size'] %>k)</td>
+          </tr>
+        </table>
+      </div>
+      <div class="span4">
+        <div style="line-height:140px;text-align:center;">
+        <a class="btn btn-primary btn-large" href="<%= "testruns/#{result['name']}/" %>">Show Details</a>
+      </div>
+      </div>
+    </div>
+
     <h3>Matrix</h3>
     <table class="table table-bordered table-striped">
       <thead>
