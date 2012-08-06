@@ -5,11 +5,11 @@
     <a href=""><i class="icon-chevron-right icon-white"></i><%= result['name'] %></a>
     on <%= result['commit'] %>
     <span class="badge badge-success"><%= result['overall']['passed'] %></span>
-    <span class=""><%= "(#{result['overall']['passed'] - result['prev_overall']['passed']})" if result['prev_overall']['passed'] %>
+    <span class=""><%= result_diff(result['overall']['passed'], result['prev_overall']['passed']) %>
     <span class="badge badge-warning"><%= result['overall']['warning'] %></span>
-    <span class=""><%= "(#{result['overall']['warning'] - result['prev_overall']['warning']})" if result['prev_overall']['warning'] %>
+    <span class=""><%= result_diff(result['overall']['warning'], result['prev_overall']['warning']) %>
     <span class="badge badge-important"><%= result['overall']['error'] %></span>
-    <span class=""><%= "(#{result['overall']['error'] - result['prev_overall']['error']})" if result['prev_overall']['error'] %>
+    <span class=""><%= result_diff(result['overall']['error'], result['prev_overall']['error']) %>
   </p>
   <div class="testrun_desc">
     <table>

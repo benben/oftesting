@@ -54,6 +54,13 @@ def render name
   ERB.new(File.read("template/#{name}.html.erb")).result(binding)
 end
 
+def result_diff current, previous
+  if previous
+    diff = current - previous
+    diff >= 0 ? "(+#{diff})" : "(#{diff})"
+  end
+end
+
 @result = {systems: []}
 
 def run_on_win box
