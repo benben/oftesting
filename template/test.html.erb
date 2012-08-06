@@ -11,7 +11,13 @@
       <td><span class="<%= @test['status'] %>"><%= @test['status'].upcase %></span></td>
     </tr>
   </table>
+  <style>
+  </style>
   <div class="highlight">
-    <pre><%= @test['log_complete'].map{|line| line = @test['log_error'].include?(line) ? "<span class=\"line error\">#{line}</span>" : line}.join %></pre>
+    <table>
+      <tbody>
+        <%= print_log @test['log_complete'], @test['log_error'] %>
+      </tbody>
+    </table>
   </div>
 <%= render 'footer' %>

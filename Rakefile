@@ -61,6 +61,30 @@ def result_diff current, previous
   end
 end
 
+def print_log complete, error
+  lines = ""
+  line_numbers = ""
+  n = 1
+  #@test['log_complete'].map{|line| line = @test['log_error'].include?(line) ? "<span class=\"line error\">#{line}</span>" : line}.join
+  complete.each do |line|
+    line_numbers << "<span class=\"line-number\">#{n}</span>"
+    if error.include?(line)
+      lines << "<span class=\"line line-error\">#{line}</span>"
+    else
+      lines << "<span class=\"line\">#{line}</span>"
+    end
+    n += 1
+  end
+  "<tr>
+    <td class=\"gutter\">
+      <pre class=\"line-numbers\"><div class=\"line-numbers-wrap\">#{line_numbers}</div></pre>
+    </td>
+    <td class=\"code\">
+      <pre><div class=\"line-wrap\">#{lines}</div></pre>
+    </td>
+  </tr>"
+end
+
 @result = {systems: []}
 
 def run_on_win box
