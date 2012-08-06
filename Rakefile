@@ -82,7 +82,7 @@ def run_on_win box
 
   # examples
   puts '## compiling all examples...'
-  Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].each do |makefile|
+  Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
     makefile.gsub!(/^share\//, '/vagrant/')
     dir = File.dirname(makefile)
     name = dir.match /[^\/]+$/
@@ -136,7 +136,7 @@ def run_on_linux box
 
   #examples
   puts "## compiling all examples..."
-  Dir["#{@config['share_folder']}/of/examples/*/*/Makefile"].each do |makefile|
+  Dir["#{@config['share_folder']}/of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
     makefile.gsub!(/^share\//, '/vagrant/')
     dir = File.dirname(makefile)
     name = dir.match /[^\/]+$/
@@ -176,7 +176,7 @@ def run_on_osx box
 
   #examples
   puts '## compiling all examples...'
-  Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].each do |makefile|
+  Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
     makefile.gsub!(/^share\//, '/vagrant/')
     dir = File.dirname(makefile)
     name = dir.match /[^\/]+$/
