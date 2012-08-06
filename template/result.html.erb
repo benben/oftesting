@@ -66,15 +66,15 @@
 
             system['tests'].each do |t|
               if t['name'] == test
-                out = '<td><span class="badge badge-'
+                out = '<td><a href="'+system['name']+'/tests/'+test+'"><span class="badge badge-'
                 out += 'success' if t['status'] == 'passed'
                 out += 'warning' if t['status'] == 'warning'
                 out += 'important' if t['status'] == 'error'
-                out += '"></span></td>'
+                out += '">&nbsp;</span></a></td>'
               end
             end
 
-            out = '<td><span class="badge"></span></td>' if out == ''
+            out = '<td><span class="badge">&nbsp;</span></td>' if out == ''
             %>
             <%= out %>
           <% end %>

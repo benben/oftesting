@@ -307,14 +307,9 @@ task :generate do
 
     result['systems'].each do |system|
       sys_overall = {}
-
-      system['tests'].each do |test|
-        if sys_overall.has_key? test['status']
-          sys_overall[test['status']] += 1
-        else
-          sys_overall[test['status']] = 1
-        end
-      end
+      sys_overall['passed'], sys_overall['warning'], sys_overall['error'] = 0, 0, 0
+      #count results
+      system['tests'].each {|test| sys_overall[test['status']] += 1}
 
       system['overall'] = sys_overall
 
