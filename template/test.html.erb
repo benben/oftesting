@@ -5,14 +5,16 @@
     <a href="../../"><%= @system['pretty_name'] %></a> /
     <%= @test['name'] %>
   </h3>
+
   <table style="width:50%;" class="table-bordered">
     <tr>
       <td><span style="font-weight:bold;">Status</a></td>
       <td><span class="<%= @test['status'] %>"><%= @test['status'].upcase %></span></td>
     </tr>
   </table>
-  <style>
-  </style>
+  <div style="text-align: right;width:100%;">
+    Show: <span id="show_only_errors"><a href="#">Only Errors</a></span> | <span id="show_no_errors"><a href="#">No Errors</a></span> | <span id="show_everything">Everything</span>
+  </div>
   <div class="highlight">
     <table>
       <tbody>

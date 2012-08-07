@@ -67,10 +67,11 @@ def print_log complete, error
   n = 1
   #@test['log_complete'].map{|line| line = @test['log_error'].include?(line) ? "<span class=\"line error\">#{line}</span>" : line}.join
   complete.each do |line|
-    line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number\"><a href=\"#L#{n}\">#{n}</a></span>"
     if error.include?(line)
+      line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number line-number-error\"><a href=\"#L#{n}\">#{n}</a></span>"
       lines << "<span class=\"line line-error\">#{line}</span>"
     else
+      line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number\"><a href=\"#L#{n}\">#{n}</a></span>"
       lines << "<span class=\"line\">#{line}</span>"
     end
     n += 1
