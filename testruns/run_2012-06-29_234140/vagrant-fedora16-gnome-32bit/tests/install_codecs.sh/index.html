@@ -18,6 +18,7 @@
         <p>automatic cross-platform testing suite for openframeworks</p>
       </header>
       <section id="content">
+         <div class="container">
 
   <h3>
     <a href="../../../../../">Home</a> /
@@ -25,29 +26,45 @@
     <a href="../../">Fedora 16 GNOME 32bit</a> /
     install_codecs.sh
   </h3>
+
   <table style="width:50%;" class="table-bordered">
     <tr>
       <td><span style="font-weight:bold;">Status</a></td>
       <td><span class="warning">WARNING</span></td>
     </tr>
   </table>
-  <div class="highlight">
-    <pre><span class="line error">warning: /var/tmp/rpm-tmp.QXTz56: Header V3 RSA/SHA256 Signature, key ID 00a4d52b: NOKEY
-</span><span class="line error">warning: /var/tmp/rpm-tmp.ui7Yxa: Header V3 RSA/SHA256 Signature, key ID 6d0c8ec2: NOKEY
-</span>Retrieving http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm
-Retrieving http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm
-Preparing...                ##################################################
-<span class="line error">	package rpmfusion-free-release-16-3.noarch (which is newer than rpmfusion-free-release-15-5.noarch) is already installed
-</span><span class="line error">	package rpmfusion-nonfree-release-16-3.noarch (which is newer than rpmfusion-nonfree-release-15-5.noarch) is already installed
-</span>Loaded plugins: langpacks, presto, refresh-packagekit
-Package ffmpeg-devel-0.8.12-1.fc16.i686 already installed and latest version
-Package libmpg123-devel-1.12.3-1.fc14.i686 already installed and latest version
-Package mpg123-1.12.3-1.fc14.i686 already installed and latest version
-Package gstreamer-plugins-ugly-0.10.18-3.fc16.i686 already installed and latest version
-Package gstreamer-ffmpeg-0.10.13-1.fc16.i686 already installed and latest version
-Nothing to do
-</pre>
+  <div style="text-align: right;width:100%;">
+    Show: <span id="show_only_errors"><a href="#">Only Errors</a></span> | <span id="show_no_errors"><a href="#">No Errors</a></span> | <span id="show_everything">Everything</span>
   </div>
+  <div class="highlight">
+    <table>
+      <tbody>
+        <tr>
+    <td class="gutter">
+      <pre class="line-numbers"><div class="line-numbers-wrap"><span id="L1" rel="#L1" class="line-number line-number-error"><a href="#L1">1</a></span><span id="L2" rel="#L2" class="line-number line-number-error"><a href="#L2">2</a></span><span id="L3" rel="#L3" class="line-number"><a href="#L3">3</a></span><span id="L4" rel="#L4" class="line-number"><a href="#L4">4</a></span><span id="L5" rel="#L5" class="line-number"><a href="#L5">5</a></span><span id="L6" rel="#L6" class="line-number line-number-error"><a href="#L6">6</a></span><span id="L7" rel="#L7" class="line-number line-number-error"><a href="#L7">7</a></span><span id="L8" rel="#L8" class="line-number"><a href="#L8">8</a></span><span id="L9" rel="#L9" class="line-number"><a href="#L9">9</a></span><span id="L10" rel="#L10" class="line-number"><a href="#L10">10</a></span><span id="L11" rel="#L11" class="line-number"><a href="#L11">11</a></span><span id="L12" rel="#L12" class="line-number"><a href="#L12">12</a></span><span id="L13" rel="#L13" class="line-number"><a href="#L13">13</a></span><span id="L14" rel="#L14" class="line-number"><a href="#L14">14</a></span></div></pre>
+    </td>
+    <td class="code">
+      <pre><div class="line-wrap"><span class="line line-error">warning: /var/tmp/rpm-tmp.QXTz56: Header V3 RSA/SHA256 Signature, key ID 00a4d52b: NOKEY
+</span><span class="line line-error">warning: /var/tmp/rpm-tmp.ui7Yxa: Header V3 RSA/SHA256 Signature, key ID 6d0c8ec2: NOKEY
+</span><span class="line">Retrieving http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm
+</span><span class="line">Retrieving http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm
+</span><span class="line">Preparing...                ##################################################
+</span><span class="line line-error">	package rpmfusion-free-release-16-3.noarch (which is newer than rpmfusion-free-release-15-5.noarch) is already installed
+</span><span class="line line-error">	package rpmfusion-nonfree-release-16-3.noarch (which is newer than rpmfusion-nonfree-release-15-5.noarch) is already installed
+</span><span class="line">Loaded plugins: langpacks, presto, refresh-packagekit
+</span><span class="line">Package ffmpeg-devel-0.8.12-1.fc16.i686 already installed and latest version
+</span><span class="line">Package libmpg123-devel-1.12.3-1.fc14.i686 already installed and latest version
+</span><span class="line">Package mpg123-1.12.3-1.fc14.i686 already installed and latest version
+</span><span class="line">Package gstreamer-plugins-ugly-0.10.18-3.fc16.i686 already installed and latest version
+</span><span class="line">Package gstreamer-ffmpeg-0.10.13-1.fc16.i686 already installed and latest version
+</span><span class="line">Nothing to do
+</span></div></pre>
+    </td>
+  </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
@@ -73,6 +90,54 @@ Nothing to do
         //expand last result
         $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
         $('#content p a').first().parent().next().show();
+
+        //test view
+        function mark_line(line_number_hash) {
+          var n = line_number_hash.match(/\d+/);
+          if (n) {
+            $('.code pre .line-wrap span:nth-child('+n+')').css('background-color', '#FFFB8C');
+          }
+        }
+
+        $('span.line-number a').click(function(){
+          $('.code pre .line-wrap span').css('background-color', 'transparent');
+          mark_line($(this).attr('href'));
+        });
+
+        if(window.location.hash) {
+          mark_line(window.location.hash);
+        }
+
+        $('#show_only_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Only Errors');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').hide();
+          $('.line-number:not(.line-number-error)').hide();
+        });
+        $('#show_no_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('No Errors');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+          $('.line-error').hide();
+          $('.line-number-error').hide();
+        });
+        $('#show_everything').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Everything');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+        });
       });
     </script>
   </body>

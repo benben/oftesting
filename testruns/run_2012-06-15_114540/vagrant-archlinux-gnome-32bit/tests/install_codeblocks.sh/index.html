@@ -18,6 +18,7 @@
         <p>automatic cross-platform testing suite for openframeworks</p>
       </header>
       <section id="content">
+         <div class="container">
 
   <h3>
     <a href="../../../../../">Home</a> /
@@ -25,34 +26,50 @@
     <a href="../../">Arch Linux GNOME 32bit</a> /
     install_codeblocks.sh
   </h3>
+
   <table style="width:50%;" class="table-bordered">
     <tr>
       <td><span style="font-weight:bold;">Status</a></td>
       <td><span class="warning">WARNING</span></td>
     </tr>
   </table>
-  <div class="highlight">
-    <pre>:: Synchronizing package databases...
- core is up to date
- extra is up to date
- community is up to date
-resolving dependencies...
-<span class="line error">warning: xterm-279-1 is up to date -- skipping
-</span>looking for inter-conflicts...
-
-Targets (2): wxgtk-2.8.12.1-3  codeblocks-10.05-2
-
-Total Installed Size:   48.44 MiB
-
-Proceed with installation? [Y/n] 
-checking package integrity...
-loading package files...
-checking for file conflicts...
-checking available disk space...
-installing wxgtk...
-installing codeblocks...
-</pre>
+  <div style="text-align: right;width:100%;">
+    Show: <span id="show_only_errors"><a href="#">Only Errors</a></span> | <span id="show_no_errors"><a href="#">No Errors</a></span> | <span id="show_everything">Everything</span>
   </div>
+  <div class="highlight">
+    <table>
+      <tbody>
+        <tr>
+    <td class="gutter">
+      <pre class="line-numbers"><div class="line-numbers-wrap"><span id="L1" rel="#L1" class="line-number"><a href="#L1">1</a></span><span id="L2" rel="#L2" class="line-number"><a href="#L2">2</a></span><span id="L3" rel="#L3" class="line-number"><a href="#L3">3</a></span><span id="L4" rel="#L4" class="line-number"><a href="#L4">4</a></span><span id="L5" rel="#L5" class="line-number"><a href="#L5">5</a></span><span id="L6" rel="#L6" class="line-number line-number-error"><a href="#L6">6</a></span><span id="L7" rel="#L7" class="line-number"><a href="#L7">7</a></span><span id="L8" rel="#L8" class="line-number"><a href="#L8">8</a></span><span id="L9" rel="#L9" class="line-number"><a href="#L9">9</a></span><span id="L10" rel="#L10" class="line-number"><a href="#L10">10</a></span><span id="L11" rel="#L11" class="line-number"><a href="#L11">11</a></span><span id="L12" rel="#L12" class="line-number"><a href="#L12">12</a></span><span id="L13" rel="#L13" class="line-number"><a href="#L13">13</a></span><span id="L14" rel="#L14" class="line-number"><a href="#L14">14</a></span><span id="L15" rel="#L15" class="line-number"><a href="#L15">15</a></span><span id="L16" rel="#L16" class="line-number"><a href="#L16">16</a></span><span id="L17" rel="#L17" class="line-number"><a href="#L17">17</a></span><span id="L18" rel="#L18" class="line-number"><a href="#L18">18</a></span><span id="L19" rel="#L19" class="line-number"><a href="#L19">19</a></span></div></pre>
+    </td>
+    <td class="code">
+      <pre><div class="line-wrap"><span class="line">:: Synchronizing package databases...
+</span><span class="line"> core is up to date
+</span><span class="line"> extra is up to date
+</span><span class="line"> community is up to date
+</span><span class="line">resolving dependencies...
+</span><span class="line line-error">warning: xterm-279-1 is up to date -- skipping
+</span><span class="line">looking for inter-conflicts...
+</span><span class="line">
+</span><span class="line">Targets (2): wxgtk-2.8.12.1-3  codeblocks-10.05-2
+</span><span class="line">
+</span><span class="line">Total Installed Size:   48.44 MiB
+</span><span class="line">
+</span><span class="line">Proceed with installation? [Y/n] 
+</span><span class="line">checking package integrity...
+</span><span class="line">loading package files...
+</span><span class="line">checking for file conflicts...
+</span><span class="line">checking available disk space...
+</span><span class="line">installing wxgtk...
+</span><span class="line">installing codeblocks...
+</span></div></pre>
+    </td>
+  </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
@@ -78,6 +95,54 @@ installing codeblocks...
         //expand last result
         $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
         $('#content p a').first().parent().next().show();
+
+        //test view
+        function mark_line(line_number_hash) {
+          var n = line_number_hash.match(/\d+/);
+          if (n) {
+            $('.code pre .line-wrap span:nth-child('+n+')').css('background-color', '#FFFB8C');
+          }
+        }
+
+        $('span.line-number a').click(function(){
+          $('.code pre .line-wrap span').css('background-color', 'transparent');
+          mark_line($(this).attr('href'));
+        });
+
+        if(window.location.hash) {
+          mark_line(window.location.hash);
+        }
+
+        $('#show_only_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Only Errors');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').hide();
+          $('.line-number:not(.line-number-error)').hide();
+        });
+        $('#show_no_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('No Errors');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+          $('.line-error').hide();
+          $('.line-number-error').hide();
+        });
+        $('#show_everything').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Everything');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+        });
       });
     </script>
   </body>

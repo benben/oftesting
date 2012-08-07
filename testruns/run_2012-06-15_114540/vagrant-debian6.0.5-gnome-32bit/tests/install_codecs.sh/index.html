@@ -18,6 +18,7 @@
         <p>automatic cross-platform testing suite for openframeworks</p>
       </header>
       <section id="content">
+         <div class="container">
 
   <h3>
     <a href="../../../../../">Home</a> /
@@ -25,21 +26,37 @@
     <a href="../../">Debian 6.0.5 GNOME 32bit</a> /
     install_codecs.sh
   </h3>
+
   <table style="width:50%;" class="table-bordered">
     <tr>
       <td><span style="font-weight:bold;">Status</a></td>
       <td><span class="passed">PASSED</span></td>
     </tr>
   </table>
-  <div class="highlight">
-    <pre>Reading package lists...
-Building dependency tree...
-Reading state information...
-gstreamer0.10-plugins-ugly is already the newest version.
-libmpg123-dev is already the newest version.
-0 upgraded, 0 newly installed, 0 to remove and 9 not upgraded.
-</pre>
+  <div style="text-align: right;width:100%;">
+    Show: <span id="show_only_errors"><a href="#">Only Errors</a></span> | <span id="show_no_errors"><a href="#">No Errors</a></span> | <span id="show_everything">Everything</span>
   </div>
+  <div class="highlight">
+    <table>
+      <tbody>
+        <tr>
+    <td class="gutter">
+      <pre class="line-numbers"><div class="line-numbers-wrap"><span id="L1" rel="#L1" class="line-number"><a href="#L1">1</a></span><span id="L2" rel="#L2" class="line-number"><a href="#L2">2</a></span><span id="L3" rel="#L3" class="line-number"><a href="#L3">3</a></span><span id="L4" rel="#L4" class="line-number"><a href="#L4">4</a></span><span id="L5" rel="#L5" class="line-number"><a href="#L5">5</a></span><span id="L6" rel="#L6" class="line-number"><a href="#L6">6</a></span></div></pre>
+    </td>
+    <td class="code">
+      <pre><div class="line-wrap"><span class="line">Reading package lists...
+</span><span class="line">Building dependency tree...
+</span><span class="line">Reading state information...
+</span><span class="line">gstreamer0.10-plugins-ugly is already the newest version.
+</span><span class="line">libmpg123-dev is already the newest version.
+</span><span class="line">0 upgraded, 0 newly installed, 0 to remove and 9 not upgraded.
+</span></div></pre>
+    </td>
+  </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
@@ -65,6 +82,54 @@ libmpg123-dev is already the newest version.
         //expand last result
         $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
         $('#content p a').first().parent().next().show();
+
+        //test view
+        function mark_line(line_number_hash) {
+          var n = line_number_hash.match(/\d+/);
+          if (n) {
+            $('.code pre .line-wrap span:nth-child('+n+')').css('background-color', '#FFFB8C');
+          }
+        }
+
+        $('span.line-number a').click(function(){
+          $('.code pre .line-wrap span').css('background-color', 'transparent');
+          mark_line($(this).attr('href'));
+        });
+
+        if(window.location.hash) {
+          mark_line(window.location.hash);
+        }
+
+        $('#show_only_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Only Errors');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').hide();
+          $('.line-number:not(.line-number-error)').hide();
+        });
+        $('#show_no_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('No Errors');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+          $('.line-error').hide();
+          $('.line-number-error').hide();
+        });
+        $('#show_everything').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Everything');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+        });
       });
     </script>
   </body>

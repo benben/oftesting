@@ -12,7 +12,7 @@ h1, h2, h3, h4, h5, h6 {
   margin:0 0 20px;
 }
 
-p, ul, ol, table, pre, dl {
+p, ul, ol, table, dl {
   margin:0 0 20px;
 }
 
@@ -55,20 +55,6 @@ blockquote {
   margin:0;
   padding:0 0 0 20px;
   font-style:italic;
-}
-
-code, pre {
-  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
-  color:#333;
-  font-size:12px;
-}
-
-pre {
-  padding:8px 15px;
-  background: #f8f8f8;
-  border-radius:5px;
-  border:1px solid #e5e5e5;
-  overflow-x: auto;
 }
 
 table {
@@ -233,15 +219,88 @@ footer {
   font-weight: bold;
 }
 
-.highlight pre {
-  font-family: monospace;
-  font-size: 80%;
-}
-
 div.testrun_desc {
   display: none;
 }
 
 span.line.error {
   color: red;
+}
+
+.btn {
+  font:14px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/**************************/
+/* CODE FORMATTING        */
+/**************************/
+
+.highlight {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.highlight th, .highlight td, .highlight pre, .highlight table {
+  margin: 0px;
+  padding: 0px;
+}
+
+.gutter {
+  margin: 0px;
+}
+
+.highlight pre {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  word-break: normal;
+  word-wrap: normal;
+  white-space: pre;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  font-size: 80%;
+  line-height: 150%;
+}
+
+.code {
+  width:100%;
+}
+
+.line-number, .line {
+  display: block;
+}
+
+.line-number {
+  padding-top: 2px;
+}
+
+.line-wrap {
+  margin-top:15px;
+}
+
+.line-numbers-wrap {
+  margin-top: 15px;
+  margin-right: 3px;
+}
+
+.line-numbers {
+  background-color: #ECECEC;
+  color: #AAA;
+  border-right: 1px solid #DDD;
+  text-align: right;
+  padding: 0px 10px;
+}
+
+.line-error {
+  color: red;
+}
+
+.line, .line-error {
+  padding: 2px 0px 0px 10px;
+}
+
+.line-numbers a,.line-numbers a:hover, .line-numbers a:active, .line-numbers a:visited {
+  color: #AAA;
+  text-decoration: none;
 }

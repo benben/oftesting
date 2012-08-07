@@ -18,8 +18,9 @@
         <p>automatic cross-platform testing suite for openframeworks</p>
       </header>
       <section id="content">
+         <div class="container">
 
-  <h3><a href="../../../../">Home</a> / <a href="../">run_2012-07-26_013751</a> / Fedora 16 GNOME 32bit</h3>
+  <h3><a href="../../../">Home</a> / <a href="../">run_2012-07-26_013751</a> / Fedora 16 GNOME 32bit</h3>
   <table class="table table-bordered table-striped">
     <thead>
       <tr>
@@ -716,6 +717,7 @@
       
     </tbody>
   </table>
+</div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
@@ -741,6 +743,54 @@
         //expand last result
         $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
         $('#content p a').first().parent().next().show();
+
+        //test view
+        function mark_line(line_number_hash) {
+          var n = line_number_hash.match(/\d+/);
+          if (n) {
+            $('.code pre .line-wrap span:nth-child('+n+')').css('background-color', '#FFFB8C');
+          }
+        }
+
+        $('span.line-number a').click(function(){
+          $('.code pre .line-wrap span').css('background-color', 'transparent');
+          mark_line($(this).attr('href'));
+        });
+
+        if(window.location.hash) {
+          mark_line(window.location.hash);
+        }
+
+        $('#show_only_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Only Errors');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').hide();
+          $('.line-number:not(.line-number-error)').hide();
+        });
+        $('#show_no_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('No Errors');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+          $('.line-error').hide();
+          $('.line-number-error').hide();
+        });
+        $('#show_everything').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Everything');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+        });
       });
     </script>
   </body>
