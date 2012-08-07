@@ -105,11 +105,11 @@
 
             system['tests'].each do |t|
               if t['name'] == test
-                out = '<td>'
-                out += '<span class="badge badge-success"></span>' if t['status'] == 'passed'
-                out += '<span class="badge badge-warning"></span>' if t['status'] == 'warning'
-                out += '<span class="badge badge-important"></span>' if t['status'] == 'error'
-                out += '</td>'
+                out = '<td><a href="'+system['name']+'/tests/'+test+'">'
+                out += '<span class="badge badge-success">&nbsp;</span>' if t['status'] == 'passed'
+                out += '<span class="badge badge-warning">&nbsp;</span>' if t['status'] == 'warning'
+                out += '<span class="badge badge-important">&nbsp;</span>' if t['status'] == 'error'
+                out += '</a></td>'
               end
             end
 
