@@ -304,3 +304,11 @@ span.line.error {
   color: #AAA;
   text-decoration: none;
 }
+
+.icon-github {
+  font-size: 14px;
+  line-height: 80%;
+  color: black;
+  height: 100%;
+  width: 100%;
+}

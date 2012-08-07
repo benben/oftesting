@@ -61,22 +61,40 @@ def result_diff current, previous
   end
 end
 
-def print_log complete, error
+def print_log name, complete, error
   lines = ""
   line_numbers = ""
+  github_links = ""
   n = 1
   #@test['log_complete'].map{|line| line = @test['log_error'].include?(line) ? "<span class=\"line error\">#{line}</span>" : line}.join
   complete.each do |line|
     if error.include?(line)
       line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number line-number-error\"><a href=\"#L#{n}\">#{n}</a></span>"
       lines << "<span class=\"line line-error\">#{line}</span>"
+
+      pos = line.match /^(.+\.\w+):(\d+):/
+      if pos
+        if pos[1] =~ /^(\.{2}\/){3}openFrameworks/
+          link = pos[1].gsub(/^(\.{2}\/){3}openFrameworks/, 'https://github.com/openframeworks/openFrameworks/tree/develop/libs/openFrameworks') + "#L#{pos[2]}"
+        elsif pos[1] =~ /^src\//
+          link = pos[1].gsub(/^src\//, "https://github.com/openframeworks/openFrameworks/tree/develop/examples/3d/#{name}/src/") + "#L#{pos[2]}"
+        end
+
+        github_links << "<span class=\"line-number\"><a href=\"#{link}\"><i class=\"icon-github\"></i></a></span>"
+      else
+        github_links << "<span class=\"line-number\">&nbsp;</span>"
+      end
     else
       line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number\"><a href=\"#L#{n}\">#{n}</a></span>"
       lines << "<span class=\"line\">#{line}</span>"
+      github_links << "<span class=\"line-number\">&nbsp;</span>"
     end
     n += 1
   end
   "<tr>
+    <td class=\"gutter\">
+      <pre class=\"line-numbers\"><div class=\"line-numbers-wrap\">#{github_links}</div></pre>
+    </td>
     <td class=\"gutter\">
       <pre class=\"line-numbers\"><div class=\"line-numbers-wrap\">#{line_numbers}</div></pre>
     </td>
