@@ -259,6 +259,8 @@ span.line.error {
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
+  font-size: 80%;
+  line-height: 150%;
 }
 
 .code {
@@ -269,8 +271,11 @@ span.line.error {
   display: block;
 }
 
+.line-number {
+  padding-top: 2px;
+}
+
 .line-wrap {
-  margin-left:10px;
   margin-top:15px;
 }
 
@@ -289,4 +294,13 @@ span.line.error {
 
 .line-error {
   color: red;
+}
+
+.line, .line-error {
+  padding: 2px 0px 0px 10px;
+}
+
+.line-numbers a,.line-numbers a:hover, .line-numbers a:active, .line-numbers a:visited {
+  color: #AAA;
+  text-decoration: none;
 }
