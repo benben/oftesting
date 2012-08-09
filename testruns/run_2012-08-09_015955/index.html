@@ -40,6 +40,10 @@
     <td>4 hours 32 minutes 29 seconds</td>
   </tr>
   <tr>
+    <td>Bad Line Count*:</td>
+    <td>3446</td>
+  </tr>
+  <tr>
     <td>Commit:</td>
     <td><a href="https://github.com/openframeworks/openFrameworks/commit/7eec04cf9d4613fc95a8cd3ff2d6501521787b29">7eec04cf9d4613fc95a8cd3ff2d6501521787b29</a> (develop)</td>
   </tr>
@@ -49,11 +53,12 @@
   </tr>
 </table>
 <h3>Matrix</h3>
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped fixed-td">
   <thead>
     <tr>
       <th>Operation System</th>
-      <th>Results</th>
+      <th>Tests (passed / with warnings / with error)</th>
+      <th>Bad Line Count*</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -68,6 +73,7 @@
           <span class="badge badge-warning">53</span>
           <span class="badge badge-important">0</span>
         </td>
+        <td>590</td>
         <td><a href="vagrant-archlinux-gnome-32bit/"><i class="icon-search"></i></a></td>
       </tr>
     
@@ -80,6 +86,7 @@
           <span class="badge badge-warning">44</span>
           <span class="badge badge-important">8</span>
         </td>
+        <td>697</td>
         <td><a href="vagrant-debian6.0.5-gnome-32bit/"><i class="icon-search"></i></a></td>
       </tr>
     
@@ -92,6 +99,7 @@
           <span class="badge badge-warning">54</span>
           <span class="badge badge-important">0</span>
         </td>
+        <td>524</td>
         <td><a href="vagrant-fedora16-gnome-32bit/"><i class="icon-search"></i></a></td>
       </tr>
     
@@ -104,6 +112,7 @@
           <span class="badge badge-warning">28</span>
           <span class="badge badge-important">0</span>
         </td>
+        <td>1081</td>
         <td><a href="vagrant-osx-10.6.2/"><i class="icon-search"></i></a></td>
       </tr>
     
@@ -116,6 +125,7 @@
           <span class="badge badge-warning">55</span>
           <span class="badge badge-important">0</span>
         </td>
+        <td>554</td>
         <td><a href="vagrant-ubuntu-12.04-32bit/"><i class="icon-search"></i></a></td>
       </tr>
     
@@ -128,11 +138,15 @@
           <span class="badge badge-warning">0</span>
           <span class="badge badge-important">96</span>
         </td>
+        <td>0</td>
         <td><a href="vagrant-windows7-64bit/"><i class="icon-search"></i></a></td>
       </tr>
     
   </tbody>
 </table>
+<div style="text-align:right;font-size:80%;">
+  <p>* Bad Lines = Lines with warnings + Lines with errors</p>
+</div>
 <h3>openFrameworks lib &amp; install scripts</h3>
 <table class="table table-bordered table-striped">
   <thead>
