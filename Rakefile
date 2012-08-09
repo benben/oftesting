@@ -150,8 +150,7 @@ def run_on_win box
   @result[:systems] << box_result
 
   puts '# halting the vm...'
-  running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
-  shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
+  shell_exec_on box['name'], "shutdown -s -t 1"
 end
 
 def run_on_linux box
