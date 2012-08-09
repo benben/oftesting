@@ -157,8 +157,11 @@ def run_on_linux box
   puts "## running #{box['name']} as LINUX..."
   box_result = {:name => box['name']}
   box_result[:tests] = []
-  puts "# running pre command..."
-  shell_exec_on box['name'], "#{box['pre_command']}"
+
+  if box['pre_command']
+    puts "# running pre command..."
+    shell_exec_on box['name'], "#{box['pre_command']}"
+  end
 
   #install scripts
   box['install_scripts'].each do |script|
