@@ -352,7 +352,10 @@ task :generate do
 
     @commit = result['commit']
 
+    result['bad_line_count'] = 0
+
     result['systems'].each do |system|
+      system['bad_line_count'] = 0
       system['pretty_name'] = @config['boxes'].map{|sys| sys['pretty_name'] if sys['name'] == system['name']}.compact[0]
       system['tests'].each do |test|
         if overall.has_key? test['status']
@@ -362,7 +365,10 @@ task :generate do
         end
 
         result['test_names'] << test['name'] unless result['test_names'].include? test['name']
+
+        system['bad_line_count'] += test['log_error'].count
       end
+      result['bad_line_count'] += system['bad_line_count']
     end
 
     result['overall'] = overall

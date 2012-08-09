@@ -24,6 +24,10 @@
             <td><%= time_diff(result['start_time'],result['end_time']) %></td>
           </tr>
           <tr>
+            <td>Bad Line Count*:</td>
+            <td><%= result['bad_line_count'] %></td>
+          </tr>
+          <tr>
             <td>Commit:</td>
             <td><a href="https://github.com/openframeworks/openFrameworks/commit/<%= result['commit'] %>"><%= result['commit'] %></a> (develop)</td>
           </tr>
@@ -41,11 +45,12 @@
     </div>
 
     <h3>Matrix</h3>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped fixed-td">
       <thead>
         <tr>
           <th>Operation System</th>
-          <th>Results</th>
+          <th>Tests (passed / with warnings / with error)</th>
+          <th>Bad Line Count*</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -60,11 +65,15 @@
               <span class="badge badge-warning"><%= system['overall']['warning'] %></span>
               <span class="badge badge-important"><%= system['overall']['error'] %></span>
             </td>
+            <td><%= system['bad_line_count'] %></td>
             <td><a href="<%= "testruns/#{result['name']}/#{system['name']}/" %>"><i class="icon-search"></i></a></td>
           </tr>
         <% end %>
       </tbody>
     </table>
+    <div style="text-align:right;font-size:80%;">
+      <p>* Bad Lines = Lines with warnings + Lines with errors</p>
+    </div>
   </div>
 <% end %>
 <%= render 'footer' %>

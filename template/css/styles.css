@@ -165,6 +165,10 @@ span.line.error {
   font:14px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.fixed-td tbody tr td:first-child {
+  width: 50%;
+}
+
 /**************************/
 /* CODE FORMATTING        */
 /**************************/
