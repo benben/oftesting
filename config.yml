@@ -5,6 +5,12 @@ cpu_count: 4
 memory_size: 2048
 
 boxes:
+  - name: vagrant-windows7-64bit
+    distro: 'win'
+    pretty_name: 'Windows 7 Professional 64bit'
+  - name: vagrant-osx-10.6.2
+    distro: 'osx'
+    pretty_name: 'Mac OS X 10.6.2'
   - name: vagrant-archlinux-gnome-32bit
     distro: 'archlinux'
     pre_command: 'sudo pacman -Syu --noprogressbar --needed --noconfirm'
@@ -14,12 +20,6 @@ boxes:
       - 'install_codeblocks.sh'
       - 'remove_codeblocks.sh'
     pretty_name: 'Arch Linux GNOME 32bit'
-  - name: vagrant-windows7-64bit
-    distro: 'win'
-    pretty_name: 'Windows 7 Professional 64bit'
-  - name: vagrant-osx-10.6.2
-    distro: 'osx'
-    pretty_name: 'Mac OS X 10.6.2'
   - name: 'vagrant-fedora16-gnome-32bit'
     distro: 'fedora' #name of distro folder in of/scripts
     pre_command: 'sudo yum update -y'
