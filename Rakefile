@@ -84,8 +84,10 @@ def print_log commit, category, name, complete, error
           link = pos[1].gsub(/^(\.{2}\/){3}libs/, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/libs") + "#L#{pos[2]}"
         elsif pos[1] =~ /^(\.{2}\/){3}addons/
           link = pos[1].gsub(/^(\.{2}\/){3}addons/, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/addons") + "#L#{pos[2]}"
-        elsif pos[1] =~ /^src\//
+        elsif pos[1] =~ /^src\// and name !~ /projectGenerator/
           link = pos[1].gsub(/^src\//, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/examples/#{category}/#{name}/src/") + "#L#{pos[2]}"
+        elsif pos[1] =~ /^src\// and name =~ /projectGenerator/
+          link = pos[1].gsub(/^src\//, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/apps/devApps/#{name}/src/") + "#L#{pos[2]}"
         end
 
         github_links << "<span class=\"line-number line-number-error\"><a href=\"#{link}\"><i class=\"icon-github\"></i></a></span>"
