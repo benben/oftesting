@@ -5,20 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>openFrameworks testing</title>
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="../../../css/styles.css">
+    <link rel="stylesheet" href="../../../css/font-awesome.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
   <body>
-    <div class="wrapper">
+<!--     <div class="container">
       <header>
         <h1>openFrameworks testing</h1>
         <p>automatic cross-platform testing suite for openframeworks</p>
       </header>
-      <section id="content">
-         <div class="container">
+    </div> -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/oftesting">openFrameworks testing</a>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="margin-top: 30px;">
 
   <h3><a href="../../../">Home</a> / <a href="../">run_2012-06-15_114540</a> / Debian 6.0.5 GNOME 32bit</h3>
   <table class="table table-bordered table-striped">
@@ -712,31 +721,31 @@
     </tbody>
   </table>
 </div>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/benben">benben</a></p>
-      </footer>
-    </div>
+  <div class="container">
+    <footer>
+      <p>This project is maintained by <a href="https://github.com/benben">benben</a>. All content on this site is released under a <a href="http://creativecommons.org/licenses/by/3.0/deed"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a></p>
+    </footer>
+  </div>
     <script src="../../../js/jquery-1.7.2.min.js"></script>
     <script src="../../../js/bootstrap.min.js"></script>
     <script type="text/javascript">
       $(function (){
-        $('#content p a').click(function(ev){
+        $('.container p a').click(function(ev){
           ev.preventDefault();
           if ($(this).parent().next().is(":visible")) {
             console.log('collapse!');
-            $(this).children('i').removeClass('icon-chevron-down').addClass('icon-chevron-right');
+            $(this).children('i').removeClass('icon-caret-down').addClass('icon-caret-right');
             $(this).parent().next().hide();
           } else {
             console.log('expand!');
-            $(this).children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
+            $(this).children('i').removeClass('icon-caret-right').addClass('icon-caret-down');
             $(this).parent().next().show();
           }
         });
 
         //expand last result
-        $('#content p a').first().children('i').removeClass('icon-chevron-right').addClass('icon-chevron-down');
-        $('#content p a').first().parent().next().show();
+        $('.container p a').first().children('i').removeClass('icon-caret-right').addClass('icon-caret-down');
+        $('.container p a').first().parent().next().show();
 
         //test view
         function mark_line(line_number_hash) {
