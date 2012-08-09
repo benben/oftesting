@@ -111,10 +111,18 @@ def run_on_win box
   box_result = {:name => box['name']}
   box_result[:tests] = []
 
-  puts '# copying OF via scp...'
-  shell_exec_on box['name'], 'rm -rf /vagrant/of'
-  shell_exec_on box['name'], 'mkdir -p /vagrant'
-  shell_exec "scp -P 2222 -i vagrant_private_key -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no #{@config['share_folder']}of/ vagrant@localhost:/vagrant/of"
+  #just trigger the net drive for the first time, dunno why, maybe bug
+  puts '# waiting for the net drives on windows...'
+  wait = true
+  while wait do
+    res = shell_exec_on box['name'], 'ls //vboxsvr/vagrant/'
+    wait = false if res[:status] != 'error'
+    sleep 5
+  end
+
+  puts '# copying of around on win because codeblocks cannot compile from net drive...'
+  shell_exec_on box['name'], 'rm -rf /vagrant'
+  shell_exec_on box['name'], 'cp -r //vboxsvr/vagrant /'
 
   #compiling OF lib
   %w[debug release].each do |target|
