@@ -248,8 +248,8 @@ def run_on_osx box
   shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
 end
 
-desc 'test everything on all VMs'
-task :test do
+desc 'test everything on all VMs or specify a box by name'
+task :test, :box do |t, args|
   start_time = Time.now
   @result[:name] = "run_#{start_time.strftime('%Y-%m-%d_%H%M%S')}"
   @result[:start_time] = start_time
@@ -267,6 +267,8 @@ task :test do
 
   puts '## compiling on all VMs...'
   @config['boxes'].each do |box|
+    # if box is set through args, skip if it doesnt match
+    break if box['name'] != args.box if args.box
     puts "# making fresh OF copy for #{box['name']}"
     shell_exec "rm -rf #{@config['share_folder']}of"
     shell_exec "cp -r tmp/of_source #{@config['share_folder']}of"
