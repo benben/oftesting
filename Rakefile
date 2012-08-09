@@ -136,13 +136,14 @@ def run_on_win box
   Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
     makefile.gsub!(/^share\//, '/vagrant/')
     dir = File.dirname(makefile)
+    category = File.dirname(dir).match /[^\/]+$/
     name = dir.match /[^\/]+$/
     puts "# compiling #{name}..."
     if shell_exec_on(box['name'], "cd #{dir} && test -e #{name}.cbp", 100)[:status] == "passed"
       res = shell_exec_on box['name'], "cd #{dir} && codeblocks.exe /na /nd /ns /nc /d --rebuild --target=debug #{name}.cbp", 300
-      box_result[:tests] << {:name => name}.merge!(res)
+      box_result[:tests] << {:name => name, :category => category}.merge!(res)
     else
-      box_result[:tests] << {:name => name}.merge!({status: "error", log_complete: ["Couldn't find cbp projectfile #{name}.cbp in #{dir}"], :log_error=>["Couldn't find cbp projectfile #{name}.cbp in #{dir}"]})
+      box_result[:tests] << {:name => name, :category => category}.merge!({status: "error", log_complete: ["Couldn't find cbp projectfile #{name}.cbp in #{dir}"], :log_error=>["Couldn't find cbp projectfile #{name}.cbp in #{dir}"]})
     end
   end
 
@@ -190,10 +191,11 @@ def run_on_linux box
   Dir["#{@config['share_folder']}/of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
     makefile.gsub!(/^share\//, '/vagrant/')
     dir = File.dirname(makefile)
+    category = File.dirname(dir).match /[^\/]+$/
     name = dir.match /[^\/]+$/
     puts "# compiling #{name}..."
     res = shell_exec_on box['name'], "cd #{dir} && make -j4"
-    box_result[:tests] << {:name => name}.merge!(res)
+    box_result[:tests] << {:name => name, :category => category}.merge!(res)
   end
 
   @result[:systems] << box_result
@@ -230,10 +232,11 @@ def run_on_osx box
   Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
     makefile.gsub!(/^share\//, '/vagrant/')
     dir = File.dirname(makefile)
+    category = File.dirname(dir).match /[^\/]+$/
     name = dir.match /[^\/]+$/
     puts "# compiling #{name}..."
     res = shell_exec_on box['name'], "cd #{dir} && xcodebuild -alltargets -parallelizeTargets", 600
-    box_result[:tests] << {:name => name}.merge!(res)
+    box_result[:tests] << {:name => name, :category => category}.merge!(res)
   end
 
   @result[:systems] << box_result
