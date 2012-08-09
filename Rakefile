@@ -88,9 +88,9 @@ def print_log commit, category, name, complete, error
           link = pos[1].gsub(/^src\//, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/examples/#{category}/#{name}/src/") + "#L#{pos[2]}"
         end
 
-        github_links << "<span class=\"line-number\"><a href=\"#{link}\"><i class=\"icon-github\"></i></a></span>"
+        github_links << "<span class=\"line-number line-number-error\"><a href=\"#{link}\"><i class=\"icon-github\"></i></a></span>"
       else
-        github_links << "<span class=\"line-number\">&nbsp;</span>"
+        github_links << "<span class=\"line-number line-number-error\">&nbsp;</span>"
       end
     else
       line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number\"><a href=\"#L#{n}\">#{n}</a></span>"
