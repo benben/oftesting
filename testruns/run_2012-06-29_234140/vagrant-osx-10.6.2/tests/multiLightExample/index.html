@@ -450,16 +450,14 @@
     </table>
   </div>
 </div>
-  <div class="container">
-    <footer>
-      <p>This project is maintained by <a href="https://github.com/benben">benben</a>. All content on this site is released under a <a href="http://creativecommons.org/licenses/by/3.0/deed"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a></p>
-    </footer>
+  <div class="container" style="margin-top:30px;">
+    <p>This project is maintained by <a href="https://github.com/benben">benben</a>. All content on this site is released under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a></p>
   </div>
     <script src="../../../../../js/jquery-1.7.2.min.js"></script>
     <script src="../../../../../js/bootstrap.min.js"></script>
     <script type="text/javascript">
       $(function (){
-        $('.container p a').click(function(ev){
+        $('.container p.dropdown a').click(function(ev){
           ev.preventDefault();
           if ($(this).parent().next().is(":visible")) {
             console.log('collapse!');
@@ -473,8 +471,8 @@
         });
 
         //expand last result
-        $('.container p a').first().children('i').removeClass('icon-caret-right').addClass('icon-caret-down');
-        $('.container p a').first().parent().next().show();
+        $('.container p.dropdown a').first().children('i').removeClass('icon-caret-right').addClass('icon-caret-down');
+        $('.container p.dropdown a').first().parent().next().show();
 
         //test view
         function mark_line(line_number_hash) {
