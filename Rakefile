@@ -61,7 +61,7 @@ def result_diff current, previous
   end
 end
 
-def print_log name, complete, error
+def print_log commit, category, name, complete, error
   lines = ""
   line_numbers = ""
   github_links = ""
@@ -72,12 +72,20 @@ def print_log name, complete, error
       line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number line-number-error\"><a href=\"#L#{n}\">#{n}</a></span>"
       lines << "<span class=\"line line-error\">#{line}</span>"
 
-      pos = line.match /^(.+\.\w+):(\d+):/
+      cleaned_line = line.gsub('In file included from', '')
+      cleaned_line = cleaned_line.gsub('from', '')
+
+      pos = cleaned_line.strip.match /^(.+\.\w+):(\d+)[:,]/
       if pos
+        link = pos[1]
         if pos[1] =~ /^(\.{2}\/){3}openFrameworks/
-          link = pos[1].gsub(/^(\.{2}\/){3}openFrameworks/, 'https://github.com/openframeworks/openFrameworks/tree/develop/libs/openFrameworks') + "#L#{pos[2]}"
+          link = pos[1].gsub(/^(\.{2}\/){3}openFrameworks/, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/libs/openFrameworks") + "#L#{pos[2]}"
+        elsif pos[1] =~ /^(\.{2}\/){3}libs/
+          link = pos[1].gsub(/^(\.{2}\/){3}libs/, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/libs") + "#L#{pos[2]}"
+        elsif pos[1] =~ /^(\.{2}\/){3}addons/
+          link = pos[1].gsub(/^(\.{2}\/){3}addons/, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/addons") + "#L#{pos[2]}"
         elsif pos[1] =~ /^src\//
-          link = pos[1].gsub(/^src\//, "https://github.com/openframeworks/openFrameworks/tree/develop/examples/3d/#{name}/src/") + "#L#{pos[2]}"
+          link = pos[1].gsub(/^src\//, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/examples/#{category}/#{name}/src/") + "#L#{pos[2]}"
         end
 
         github_links << "<span class=\"line-number\"><a href=\"#{link}\"><i class=\"icon-github\"></i></a></span>"
@@ -339,6 +347,8 @@ task :generate do
 
     overall = {}
     result['test_names'] = []
+
+    @commit = result['commit']
 
     result['systems'].each do |system|
       system['pretty_name'] = @config['boxes'].map{|sys| sys['pretty_name'] if sys['name'] == system['name']}.compact[0]

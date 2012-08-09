@@ -18,7 +18,7 @@
   <div class="highlight">
     <table>
       <tbody>
-        <%= print_log @test['name'], @test['log_complete'], @test['log_error'] %>
+        <%= print_log @commit, @test['category'], @test['name'], @test['log_complete'], @test['log_error'] %>
       </tbody>
     </table>
   </div>
