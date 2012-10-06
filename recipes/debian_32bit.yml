@@ -1,0 +1,14 @@
+name: Debian 6.0.5 GNOME 32bit
+box: vagrant-debian6.0.5-gnome-32bit
+os: linux
+type: debian
+update_command: sudo apt-get update -y --force-yes && sudo apt-get dist-upgrade -y --force-yes
+install_scripts:
+  - 'install_codecs.sh'
+  - 'install_dependencies.sh'
+  - 'install_codeblocks.sh'
+  - 'remove_codeblocks.sh'
+lib_compile_command: cd /vagrant/of/libs/openFrameworksCompiled/project/linux/ && make clean ; make -j4 TARGET
+pg_compile_command: make clean ; make -j4
+examples_compile_command: make -j4
+halt_command: sudo shutdown -h -P now

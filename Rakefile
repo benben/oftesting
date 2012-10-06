@@ -1,262 +1,22 @@
+$:.unshift File.dirname(__FILE__)
+
 require 'bundler/setup'
 require 'open3'
 require 'colored'
 require 'json'
 require 'timeout'
 
+require 'lib/shell_exec'
+require 'lib/result_utils'
+
 @config = YAML.load_file('config.yml')
-
-def shell_exec command, timeout=0
-  path = File.dirname(__FILE__)
-  status = 'passed'
-  log_complete = []
-  log_error = []
-
-  begin
-    Timeout::timeout(timeout) do
-      # running the command, writing exit code to tmp/exit_code, writing all errors to tmp/errorlog, piping everything to stdout
-      stdin, stdout, stderr, wait_thr = Open3.popen3("((#{command}; echo $? > #{path}/tmp/exit_code) 2>&1 1>&3 | tee #{path}/tmp/errorlog ) 3>&1")
-
-      while (line = stdout.gets)
-        log_complete << line
-        if File.exists?("#{path}/tmp/errorlog")
-          if File.readlines("#{path}/tmp/errorlog").include? line
-            log_error << line
-            line = line.red
-            status = 'warning'
-          end
-        end
-        $stdout.write line
-      end
-
-      status = 'error' if File.read("#{path}/tmp/exit_code").to_i != 0
-    end
-  rescue Timeout::Error => e
-    line = "## TIMEOUT::ERROR: Command was interrupted after #{timeout} seconds ##\n"
-    log_complete << line
-    log_error << line
-    status = 'error'
-    $stdout.write line.red
-  end
-
-  %x[rm -f #{path}/tmp/errorlog]
-  %x[rm -f #{path}/tmp/exit_code]
-
-  {:status => status, :log_complete => log_complete, :log_error => log_error}
-end
-
-def shell_exec_on box_name, command, timeout=0
-  shell_exec "vagrant ssh #{box_name} -c '#{command}'", timeout
-end
-
-def render name
-  require 'erb'
-  ERB.new(File.read("template/#{name}.html.erb")).result(binding)
-end
-
-def result_diff current, previous
-  if previous
-    diff = current - previous
-    diff >= 0 ? "(+#{diff})" : "(#{diff})"
-  end
-end
-
-def print_log commit, category, name, complete, error
-  lines = ""
-  line_numbers = ""
-  github_links = ""
-  n = 1
-  #@test['log_complete'].map{|line| line = @test['log_error'].include?(line) ? "<span class=\"line error\">#{line}</span>" : line}.join
-  complete.each do |line|
-    if error.include?(line)
-      line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number line-number-error\"><a href=\"#L#{n}\">#{n}</a></span>"
-      lines << "<span class=\"line line-error\">#{line}</span>"
-
-      cleaned_line = line.gsub('In file included from', '')
-      cleaned_line = cleaned_line.gsub('from', '')
-
-      pos = cleaned_line.strip.match /^(.+\.\w+):(\d+)[:,]/
-      if pos
-        link = pos[1]
-        if pos[1] =~ /^(\.{2}\/){3}openFrameworks/
-          link = pos[1].gsub(/^(\.{2}\/){3}openFrameworks/, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/libs/openFrameworks") + "#L#{pos[2]}"
-        elsif pos[1] =~ /^(\.{2}\/){3}libs/
-          link = pos[1].gsub(/^(\.{2}\/){3}libs/, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/libs") + "#L#{pos[2]}"
-        elsif pos[1] =~ /^(\.{2}\/){3}addons/
-          link = pos[1].gsub(/^(\.{2}\/){3}addons/, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/addons") + "#L#{pos[2]}"
-        elsif pos[1] =~ /^src\// and name !~ /projectGenerator/
-          link = pos[1].gsub(/^src\//, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/examples/#{category}/#{name}/src/") + "#L#{pos[2]}"
-        elsif pos[1] =~ /^src\// and name =~ /projectGenerator/
-          link = pos[1].gsub(/^src\//, "https://github.com/openframeworks/openFrameworks/tree/#{commit}/apps/devApps/#{name}/src/") + "#L#{pos[2]}"
-        end
-
-        github_links << "<span class=\"line-number line-number-error\"><a href=\"#{link}\"><i class=\"icon-github\"></i></a></span>"
-      else
-        github_links << "<span class=\"line-number line-number-error\">&nbsp;</span>"
-      end
-    else
-      line_numbers << "<span id=\"L#{n}\" rel=\"#L#{n}\" class=\"line-number\"><a href=\"#L#{n}\">#{n}</a></span>"
-      lines << "<span class=\"line\">#{line}</span>"
-      github_links << "<span class=\"line-number\">&nbsp;</span>"
-    end
-    n += 1
-  end
-  "<tr>
-    <td class=\"gutter\">
-      <pre class=\"line-numbers\"><div class=\"line-numbers-wrap\">#{github_links}</div></pre>
-    </td>
-    <td class=\"gutter\">
-      <pre class=\"line-numbers\"><div class=\"line-numbers-wrap\">#{line_numbers}</div></pre>
-    </td>
-    <td class=\"code\">
-      <pre><div class=\"line-wrap\">#{lines}</div></pre>
-    </td>
-  </tr>"
-end
-
+@recipes = Dir['recipes/*'].map!{|recipe| YAML.load_file(recipe)}
 @result = {systems: []}
 
-def run_on_win box
-  puts "## running #{box['name']} as WINDOWS..."
-  box_result = {:name => box['name']}
-  box_result[:tests] = []
-
-  #just trigger the net drive for the first time, dunno why, maybe bug
-  puts '# waiting for the net drives on windows...'
-  wait = true
-  while wait do
-    res = shell_exec_on box['name'], 'ls //vboxsvr/vagrant/'
-    wait = false if res[:status] != 'error'
-    sleep 5
-  end
-
-  puts '# copying of around on win because codeblocks cannot compile from net drive...'
-  shell_exec_on box['name'], 'rm -rf /vagrant'
-  shell_exec_on box['name'], 'cp -r //vboxsvr/vagrant /'
-
-  #compiling OF lib
-  %w[debug release].each do |target|
-    puts "# compiling OF lib for #{target}"
-    res = shell_exec_on box['name'], "cd /vagrant/of/libs/openFrameworksCompiled/project/win_cb/ && codeblocks.exe /na /nd /ns /nc /d --rebuild --target=#{target} openFrameworksLib.cbp", 240
-    box_result[:tests] << {:name => "OF lib compile (#{target})"}.merge!(res)
-  end
-
-  # examples
-  puts '## compiling all examples...'
-  Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
-    makefile.gsub!(/^share\//, '/vagrant/')
-    dir = File.dirname(makefile)
-    category = File.dirname(dir).match /[^\/]+$/
-    name = dir.match /[^\/]+$/
-    puts "# compiling #{name}..."
-    if shell_exec_on(box['name'], "cd #{dir} && test -e #{name}.cbp", 100)[:status] == "passed"
-      res = shell_exec_on box['name'], "cd #{dir} && codeblocks.exe /na /nd /ns /nc /d --rebuild --target=debug #{name}.cbp", 300
-      box_result[:tests] << {:name => name, :category => category}.merge!(res)
-    else
-      box_result[:tests] << {:name => name, :category => category}.merge!({status: "error", log_complete: ["Couldn't find cbp projectfile #{name}.cbp in #{dir}"], :log_error=>["Couldn't find cbp projectfile #{name}.cbp in #{dir}"]})
-    end
-  end
-
-  @result[:systems] << box_result
-
-  puts '# halting the vm...'
-  shell_exec_on box['name'], "shutdown -s -t 1"
-end
-
-def run_on_linux box
-  puts "## running #{box['name']} as LINUX..."
-  box_result = {:name => box['name']}
-  box_result[:tests] = []
-
-  if box['pre_command']
-    puts "# running pre command..."
-    shell_exec_on box['name'], "#{box['pre_command']}"
-  end
-
-  #install scripts
-  box['install_scripts'].each do |script|
-    puts "# running #{script}.."
-    res = shell_exec_on box['name'], "cd /vagrant/of/scripts/linux/#{box['distro']} && sudo ./#{script}", 600
-    box_result[:tests] << {:name => script}.merge!(res)
-  end
-
-  #compiling OF lib Debug and Release
-  %w[Debug Release].each do |target|
-    puts "# compiling OF lib #{target}"
-    bit = box['name'].match(/(64)bit$/) ? '64' : ''
-    res = shell_exec_on box['name'], "cd /vagrant/of/libs/openFrameworksCompiled/project/linux#{bit}/ && make clean ; make -j4 #{target}"
-    box_result[:tests] << {:name => "OF lib #{target} compile"}.merge!(res)
-  end
-
-  #project generator (compile)
-  puts "# compiling the project generator..."
-  res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && make clean ; make -j4'
-  box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
-
-  # #project generator (run --allexamples)
-  # puts "# running the project generator..."
-  # res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator/bin && ./projectGenerator --allexamples', 120
-  # box_result[:tests] << {:name => './projectGenerator --allexamples'}.merge!(res)
-
-  #examples
-  puts "## compiling all examples..."
-  Dir["#{@config['share_folder']}/of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
-    makefile.gsub!(/^share\//, '/vagrant/')
-    dir = File.dirname(makefile)
-    category = File.dirname(dir).match /[^\/]+$/
-    name = dir.match /[^\/]+$/
-    puts "# compiling #{name}..."
-    res = shell_exec_on box['name'], "cd #{dir} && make -j4"
-    box_result[:tests] << {:name => name, :category => category}.merge!(res)
-  end
-
-  @result[:systems] << box_result
-
-  puts '# running vbguestaddition update...'
-  shell_exec "vagrant vbguest -f #{box['name']}"
-
-  puts '# halting the vm...'
-  shell_exec "vagrant halt #{box['name']}"
-end
-
-def run_on_osx box
-  puts "## running #{box['name']} as OSX..."
-  box_result = {:name => box['name']}
-  box_result[:tests] = []
-
-  puts '# copying OF via scp...'
-  shell_exec_on box['name'], 'rm -rf /vagrant/of'
-  shell_exec "scp -P 2222 -i vagrant_private_key -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no #{@config['share_folder']}of/ vagrant@localhost:/vagrant/of"
-
-  #compiling OF lib
-  # TODO: COMPILE FOR RELEASE AND DEBUG SEPERATELY
-  puts "# compiling OF lib"
-  res = shell_exec_on box['name'], "cd /vagrant/of/libs/openFrameworksCompiled/project/osx/ && xcodebuild -alltargets -parallelizeTargets", 600
-  box_result[:tests] << {:name => "OF lib compile"}.merge!(res)
-
-  #project generator (compile)
-  puts "# compiling the project generator..."
-  res = shell_exec_on box['name'], 'cd /vagrant/of/apps/devApps/projectGenerator && xcodebuild -alltargets -parallelizeTargets', 600
-  box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
-
-  #examples
-  puts '## compiling all examples...'
-  Dir["#{@config['share_folder']}of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact.each do |makefile|
-    makefile.gsub!(/^share\//, '/vagrant/')
-    dir = File.dirname(makefile)
-    category = File.dirname(dir).match /[^\/]+$/
-    name = dir.match /[^\/]+$/
-    puts "# compiling #{name}..."
-    res = shell_exec_on box['name'], "cd #{dir} && xcodebuild -alltargets -parallelizeTargets", 600
-    box_result[:tests] << {:name => name, :category => category}.merge!(res)
-  end
-
-  @result[:systems] << box_result
-
-  puts '# halting the vm...'
-  running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
-  shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
-end
+# def run_on_linux box
+#   puts '# running vbguestaddition update...'
+#   shell_exec "vagrant vbguest -f #{box['name']}"
+# end
 
 desc 'test everything on all VMs or specify a box by name'
 task :test, :box do |t, args|
@@ -275,26 +35,7 @@ task :test, :box do |t, args|
 
   @result[:commit] = File.read('tmp/commit').chomp
 
-  puts '## compiling on all VMs...'
-  @config['boxes'].each do |box|
-    # if box is set through args, skip if it doesnt match
-    break if box['name'] != args.box if args.box
-    puts "# making fresh OF copy for #{box['name']}"
-    shell_exec "rm -rf #{@config['share_folder']}of"
-    shell_exec "cp -r tmp/of_source #{@config['share_folder']}of"
-    puts '# starting the vm...'
-    shell_exec "vagrant up #{box['name']}"
-
-    if box['distro'] =~ /osx/
-      run_on_osx box
-    elsif box['distro'] =~ /win/
-      run_on_win box
-    else
-      run_on_linux box
-    end
-    puts "# deleting OF folder..."
-    shell_exec "rm -rf #{@config['share_folder']}/of"
-  end
+  run_recipes
 
   puts "## generating results..."
   @result[:end_time] = Time.now
@@ -303,27 +44,46 @@ task :test, :box do |t, args|
   File.open("#{dir_name}/result.json", 'w+', encoding: Encoding::UTF_8) {|f| f.write(JSON.pretty_generate(@result)) }
 end
 
+desc 'retest only a box or example for a given testrun'
+task :retest, :testrun, :box, :example do |t, args|
+  testrun = args.testrun
+  box = args.box
+  example = args.example
+  raise "please specify an existing testrun. exit!" unless (Dir['testruns/*'].map{|d| d.gsub('testruns/','')}.include?(testrun) or testrun == 'last') and testrun
+  raise "please specify an existing box. exit!" unless box
+  testrun = Dir['testruns/*'].map{|d| d.gsub('testruns/','')}.sort.last if testrun == 'last'
+  last_result = JSON.parse(File.read("testruns/#{testrun}/result.json"))
+
+  #getting index of the system array in the result file
+  sys_index = 0
+  last_result['systems'].each{|sys| break if sys['name'] == box; sys_index += 1}
+
+  unless example
+    run_recipes box: box
+    #replace it
+    last_result['systems'][sys_index] = @result[:systems][0]
+  else
+    run_recipes box: box, example: example
+    #getting index of example
+    example_index = 0
+    last_result['systems'][sys_index]['tests'].each{|test| break if test['name'] == example; example_index += 1}
+
+    #getting index of new example
+    new_example_index = 0
+    @result[:systems][0][:tests].each{|test| break if test[:name] == example; new_example_index += 1}
+
+    #replace it
+    last_result['systems'][sys_index]['tests'][example_index] = @result[:systems][0][:tests][new_example_index]
+  end
+
+  puts "updating the result of #{testrun}..."
+  File.open("testruns/#{testrun}/result.json", 'w+', encoding: Encoding::UTF_8) {|f| f.write(JSON.pretty_generate(last_result)) }
+end
+
 desc 'clean all temporary files'
 task :clean do
   %x[rm -rf tmp/*]
   %x[rm -rf share/of]
-end
-
-def time_diff start_time, end_time
-  require 'time_diff'
-  d = Time.diff(start_time, end_time)
-  str = []
-
-  %w[hour minute second].each do |t|
-    s = ""
-    if d[t.to_sym] != 0
-      s += "#{d[t.to_sym]} #{t}"
-      s += "s" if d[t.to_sym] > 1
-    end
-    str << s if s.length > 0
-  end
-
-  str.join(' ')
 end
 
 desc 'generate web pages'
@@ -356,7 +116,7 @@ task :generate do
 
     result['systems'].each do |system|
       system['bad_line_count'] = 0
-      system['pretty_name'] = @config['boxes'].map{|sys| sys['pretty_name'] if sys['name'] == system['name']}.compact[0]
+      system['pretty_name'] = system['name']
       system['tests'].each do |test|
         if overall.has_key? test['status']
           overall[test['status']] += 1
@@ -454,7 +214,7 @@ end
 
 desc 'create all vagrant boxes or specify one box'
 task :create, :box do |t, args|
-  boxes = args.box ? [args.box] : @config['boxes'].map{|b| b['name']}
+  boxes = args.box ? [args.box] : @recipes.map{|b| b['box']}
   shell_exec 'mkdir -p ../vagrant_build'
   Dir.chdir '../vagrant_build'
   boxes.each do |name|
@@ -470,4 +230,119 @@ task :halt do
   puts '# halting the vm...'
   running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
   shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
+end
+
+def run_recipes *args
+  only_on_box = nil
+  only_this_example = nil
+  if args[0]
+    only_on_box = args[0][:box] if args[0][:box]
+    only_this_example = args[0][:example] if args[0][:example]
+  end
+
+  current_recipe = 1
+  puts '## compiling on all VMs...'
+  @recipes.each do |recipe|
+    # if box is set through args, skip if it doesnt match
+    next unless recipe['name'].match(Regexp.new(only_on_box,true)) if only_on_box
+
+    #copying fresh of folder
+    puts "# making fresh OF copy for #{recipe['name']}"
+    shell_exec "rm -rf share/of"
+    shell_exec "cp -r tmp/of_source share/of"
+
+    #starting the box
+    puts '# starting the vm...'
+    shell_exec "vagrant up #{recipe['box']}", 120
+
+    # #running commands from recipe
+    puts "## running #{recipe['name']} as #{recipe['os'].upcase}..."
+    box_result = {:name => recipe['name']}
+    box_result[:tests] = []
+
+    if recipe['os'] == 'win'
+      #just trigger the net drive for the first time, dunno why, maybe bug
+      puts '# waiting for the net drives on windows...'
+      wait = true
+      while wait do
+        res = shell_exec_on recipe['box'], 'ls //vboxsvr/vagrant/'
+        if res[:status] != 'error'
+          wait = false
+        else
+          sleep 5
+        end
+      end
+    end
+
+    #running os specific pre commands
+    puts "# running pre commands..."
+    if recipe['pre_commands']
+      recipe['pre_commands'].each do |where, command|
+        if where == 'on_box'
+          shell_exec_on recipe['box'], command
+        else
+          shell_exec command
+        end
+      end
+    end
+
+    #running install scripts
+    if recipe['install_scripts']
+      recipe['install_scripts'].each do |script|
+        puts "# running #{script}.."
+        res = shell_exec_on recipe['box'], "cd /vagrant/of/scripts/linux/#{recipe['type']} && sudo ./#{script}", 600
+        box_result[:tests] << {:name => script}.merge!(res)
+      end
+    end
+
+    #compile of
+    %w[Debug Release].each do |target|
+      puts "# compiling OF lib #{target}"
+      target = target.downcase if recipe['os'] == 'win'
+      res = shell_exec_on recipe['box'], recipe['lib_compile_command'].gsub('TARGET', target)
+      box_result[:tests] << {:name => "OF lib #{target} compile"}.merge!(res)
+    end
+
+    #compile pg
+    if recipe['pg_compile_command'] and !only_this_example
+      puts "# compiling the project generator..."
+      res = shell_exec_on recipe['box'], "cd /vagrant/of/apps/devApps/projectGenerator && #{recipe['pg_compile_command']}", 600
+      box_result[:tests] << {:name => 'projectGenerator'}.merge!(res)
+    end
+
+    #compile examples
+    puts '## compiling all examples...'
+    examples = Dir["share/of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact
+    examples_count = examples.count
+    current_example = 1
+    examples.each do |makefile|
+      makefile.gsub!(/^share\//, '/vagrant/')
+      dir = File.dirname(makefile)
+      category = File.dirname(dir).match /[^\/]+$/
+      name = dir.match(/[^\/]+$/)[0]
+      next unless name == only_this_example if only_this_example
+      puts "# compiling #{name} ( #{current_example} / #{examples_count} ) on #{recipe['name']} ( #{current_recipe} / #{@recipes.count} )..."
+
+      res = shell_exec_on recipe['box'], "cd #{dir} && #{recipe['examples_compile_command'].gsub('NAME', name)}", 600
+      box_result[:tests] << {:name => name, :category => category}.merge!(res)
+
+      current_example += 1
+    end
+
+    @result[:systems] << box_result
+
+    #shutdown the vm
+    puts "## shutting down the vm..."
+    if recipe['os'] == 'osx'
+      running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
+      shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
+    else
+      shell_exec_on recipe['box'], recipe['halt_command']
+    end
+
+    #deleting the of folder
+    puts "# deleting OF folder..."
+    shell_exec "rm -rf #{@config['share_folder']}/of"
+    current_recipe += 1
+  end
 end

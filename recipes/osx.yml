@@ -1,0 +1,10 @@
+name: Mac OS X 10.6.2
+box: vagrant-osx-10.6.2
+os: osx
+pre_commands:
+  on_box: rm -rf /vagrant/of
+  on_host: scp -P 2222 -i vagrant_private_key -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no share/of/ vagrant@localhost:/vagrant/of
+lib_compile_command: cd /vagrant/of/libs/openFrameworksCompiled/project/osx/ && xcodebuild -alltargets -parallelizeTargets -configuration TARGET
+pg_compile_command: xcodebuild -alltargets -parallelizeTargets
+examples_compile_command: xcodebuild -alltargets -parallelizeTargets
+halt_command: shutdown -h now
