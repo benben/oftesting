@@ -24,7 +24,7 @@ def print_log commit, category, name, complete, error
       cleaned_line = line.gsub('In file included from', '')
       cleaned_line = cleaned_line.gsub('from', '')
 
-      pos = cleaned_line.strip.match /^[^\/]+(.+\.\w+):(\d+)[:,]/
+      pos = cleaned_line.strip.match /^([^\/]+.+\.\w+):(\d+)[:,]/
       if pos
         link = pos[1]
         if pos[1] =~ /^(\.{2}\/){3}openFrameworks/
