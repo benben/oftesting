@@ -58,7 +58,7 @@
         <% result['systems'].each do |system| %>
           <tr>
             <td>
-              <a href="<%= "testruns/#{result['name']}/#{system['name']}/" %>"><%= system['pretty_name'] %></a>
+              <a href="<%= "testruns/#{result['name']}/#{system['box']}/" %>"><%= system['name'] %></a>
             </td>
             <td>
               <span class="badge badge-success"><%= system['overall']['passed'] %></span>
@@ -66,7 +66,7 @@
               <span class="badge badge-important"><%= system['overall']['error'] %></span>
             </td>
             <td><%= system['bad_line_count'] %></td>
-            <td><a href="<%= "testruns/#{result['name']}/#{system['name']}/" %>"><i class="icon-search"></i></a></td>
+            <td><a href="<%= "testruns/#{result['name']}/#{system['box']}/" %>"><i class="icon-search"></i></a></td>
           </tr>
         <% end %>
       </tbody>

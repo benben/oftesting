@@ -116,7 +116,6 @@ task :generate do
 
     result['systems'].each do |system|
       system['bad_line_count'] = 0
-      system['pretty_name'] = system['name']
       system['tests'].each do |test|
         if overall.has_key? test['status']
           overall[test['status']] += 1
@@ -149,7 +148,7 @@ task :generate do
 
       system['overall'] = sys_overall
 
-      system_folder = "#{result_folder}#{system['name']}/"
+      system_folder = "#{result_folder}#{system['box']}/"
       Dir.mkdir(system_folder)
 
       @asset_folder = '../'*3
@@ -173,7 +172,7 @@ task :generate do
       end
     end
 
-    result['systems'].sort!{|a,b| a['pretty_name'] <=> b['pretty_name']}
+    result['systems'].sort!{|a,b| a['name'] <=> b['name']}
 
     @result = result
     @asset_folder = '../'*2
@@ -257,7 +256,7 @@ def run_recipes *args
 
     # #running commands from recipe
     puts "## running #{recipe['name']} as #{recipe['os'].upcase}..."
-    box_result = {:name => recipe['name']}
+    box_result = {:name => recipe['name'], :box => recipe['box']}
     box_result[:tests] = []
 
     if recipe['os'] == 'win'
@@ -300,7 +299,7 @@ def run_recipes *args
       puts "# compiling OF lib #{target}"
       target = target.downcase if recipe['os'] == 'win'
       res = shell_exec_on recipe['box'], recipe['lib_compile_command'].gsub('TARGET', target)
-      box_result[:tests] << {:name => "OF lib #{target} compile"}.merge!(res)
+      box_result[:tests] << {:name => "OF lib #{target.capitalize} compile"}.merge!(res)
     end
 
     #compile pg
