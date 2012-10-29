@@ -5,6 +5,7 @@ require 'open3'
 require 'colored'
 require 'json'
 require 'timeout'
+require 'active_record'
 
 require 'lib/shell_exec'
 require 'lib/result_utils'
@@ -12,6 +13,8 @@ require 'lib/result_utils'
 @config = YAML.load_file('config.yml')
 @recipes = Dir['recipes/*'].map!{|recipe| YAML.load_file(recipe)}
 @result = {systems: []}
+
+require 'tasks/db'
 
 # def run_on_linux box
 #   puts '# running vbguestaddition update...'

@@ -5,3 +5,5 @@ of/
 .vagrant
 testruns/*
 tmp/*
+login.yml
+db.sqlite3

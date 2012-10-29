@@ -3,3 +3,8 @@ share_folder: share/
 www_dir: tmp/web/
 cpu_count: 4
 memory_size: 2048
+db:
+  adapter: sqlite3
+  database: db.sqlite3
+  pool: 5
+  timeout: 5000
