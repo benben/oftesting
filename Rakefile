@@ -16,6 +16,8 @@ require 'lib/result_utils'
 
 require 'tasks/db'
 
+ENV['VAGRANT_HOME'] = @config['vagrant_home']
+
 # def run_on_linux box
 #   puts '# running vbguestaddition update...'
 #   shell_exec "vagrant vbguest -f #{box['name']}"
@@ -58,13 +60,28 @@ task :retest, :testrun, :box, :example do |t, args|
   last_result = JSON.parse(File.read("testruns/#{testrun}/result.json"))
 
   #getting index of the system array in the result file
-  sys_index = 0
-  last_result['systems'].each{|sys| break if sys['name'] == box; sys_index += 1}
+  sys_index = -1
+  last_result['systems'].each_with_index do |sys, i|
+    sys_index = i if sys['name'] == box
+  end
+
+  #if no box matches, sys index will append to alredy existing systems
+  if sys_index == -1
+    sys_index = last_result['systems'].count
+    last_result['systems'][sys_index] = {}
+    last_result['systems'][sys_index]['name']  = ""
+    last_result['systems'][sys_index]['box']   = ""
+    last_result['systems'][sys_index]['tests'] = []
+  end
 
   unless example
     run_recipes box: box
     #replace it
-    last_result['systems'][sys_index] = @result[:systems][0]
+    unless @result[:systems][0].nil?
+      last_result['systems'][sys_index]['name']  = @result[:systems][0][:name]
+      last_result['systems'][sys_index]['box']   = @result[:systems][0][:box]
+      last_result['systems'][sys_index]['tests'] = @result[:systems][0][:tests]
+    end
   else
     run_recipes box: box, example: example
     #getting index of example
@@ -76,7 +93,11 @@ task :retest, :testrun, :box, :example do |t, args|
     @result[:systems][0][:tests].each{|test| break if test[:name] == example; new_example_index += 1}
 
     #replace it
-    last_result['systems'][sys_index]['tests'][example_index] = @result[:systems][0][:tests][new_example_index]
+    if @result[:systems][0][:tests].length > 0
+      last_result['systems'][sys_index]['name'] = @result[:systems][0][:name]
+      last_result['systems'][sys_index]['box']  = @result[:systems][0][:box]
+      last_result['systems'][sys_index]['tests'][example_index] = @result[:systems][0][:tests][new_example_index]
+    end
   end
 
   puts "updating the result of #{testrun}..."
@@ -152,7 +173,7 @@ task :generate do
       system['overall'] = sys_overall
 
       system_folder = "#{result_folder}#{system['box']}/"
-      Dir.mkdir(system_folder)
+      Dir.mkdir(system_folder) unless File.directory?(system_folder)
 
       @asset_folder = '../'*3
 
@@ -162,13 +183,13 @@ task :generate do
       f.write(render 'system')
       f.close
 
-      Dir.mkdir("#{system_folder}tests")
+      Dir.mkdir("#{system_folder}tests") unless File.directory?("#{system_folder}tests")
 
       @asset_folder = '../'*5
       system['tests'].each do |test|
         @test = test
         test_folder = "#{system_folder}tests/#{test['name']}/"
-        Dir.mkdir(test_folder)
+        Dir.mkdir(test_folder) unless File.directory?(test_folder)
         f = File.new("#{test_folder}index.html", 'w+')
         f.write(render 'test')
         f.close

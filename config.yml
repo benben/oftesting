@@ -1,4 +1,5 @@
-of_source: /media/data/openFrameworks
+of_source: /media/ben/data/openFrameworks
+vagrant_home: /media/ben/data/vagrant
 share_folder: share/
 www_dir: tmp/web/
 cpu_count: 4
