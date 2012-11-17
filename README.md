@@ -15,10 +15,10 @@ git 1.7.9.5
 
 ## Commands:
 
-rake test # compile everything on all platforms
-rake test['only on osx 10.8','mac'] # give the testrun a name and compile everything only on osx
-rake retest[last,vagrant-osx-10.6.2,allAddonsExample] # rerun the allAddonsExample on OSX and update the last test
-rake retest[name-of-testrun,vagrant-osx-10.6.2,allAddonsExample] # rerun the allAddonsExample on OSX and update the test with the name 'name-of-testrun'
+    rake test # compile everything on all platforms
+    rake test['only on osx 10.8','mac'] # give the testrun a name and compile everything only on osx
+    rake retest[last,vagrant-osx-10.6.2,allAddonsExample] # rerun the allAddonsExample on OSX and update the last test
+    rake retest[name-of-testrun,vagrant-osx-10.6.2,allAddonsExample] # rerun the allAddonsExample on OSX and update the test with the name 'name-of-testrun'
 
 
 ## License
