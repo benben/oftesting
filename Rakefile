@@ -41,7 +41,11 @@ task :test, :name, :box do |t, args|
 
   @result[:commit] = File.read('tmp/commit').chomp
 
-  run_recipes
+  if args.box
+    run_recipes box: args.box
+  else
+    run_recipes
+  end
 
   puts "## generating results..."
   @result[:end_time] = Time.now
