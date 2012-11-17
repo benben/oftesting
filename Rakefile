@@ -131,9 +131,11 @@ task :generate do
   %x[cp -R template/img tmp/web/]
   %x[cp -R template/js tmp/web/]
   @results = []
-  Dir["testruns/*/result.json"].sort.each do |testrun_file|
+  Dir["testruns/*/result.json"].each do |testrun_file|
     @results << JSON.parse(File.read(testrun_file))
   end
+
+  @results.sort!{|a,b| a['start_time'] <=> b['start_time']}
 
   prev_overall = {}
 
@@ -149,12 +151,9 @@ task :generate do
 
     result['systems'].each do |system|
       system['bad_line_count'] = 0
+      overall['passed'], overall['warning'], overall['error'] = 0, 0, 0
       system['tests'].each do |test|
-        if overall.has_key? test['status']
-          overall[test['status']] += 1
-        else
-          overall[test['status']] = 1
-        end
+        overall[test['status']] += 1
 
         result['test_names'] << test['name'] unless result['test_names'].include? test['name']
 

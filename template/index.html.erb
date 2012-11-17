@@ -2,7 +2,7 @@
 <h3>Home</h3>
 <% @results.reverse.each do |result| %>
   <p class="dropdown">
-    <a href=""><i class="icon-caret-right"></i><%= result['name'] %></a>
+    <a href=""><i class="icon-caret-right"></i><%= prettify(result['name']) %></a>
     on <%= result['commit'] %>
     <span class="badge badge-success"><%= result['overall']['passed'] %></span>
     <span class=""><%= result_diff(result['overall']['passed'], result['prev_overall']['passed']) %>

@@ -1,3 +1,8 @@
+def prettify(name)
+  pretty = name.match(/^\d{8}_\d{6}-(.+)/)
+  pretty ? pretty[1].gsub('_', ' ') : name
+end
+
 def render name
   require 'erb'
   ERB.new(File.read("template/#{name}.html.erb")).result(binding)
