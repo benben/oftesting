@@ -47,11 +47,15 @@ task :test, :name, :box do |t, args|
     run_recipes
   end
 
-  puts "## generating results..."
-  @result[:end_time] = Time.now
-  dir_name = "testruns/#{@result[:name]}"
-  Dir.mkdir(dir_name)
-  File.open("#{dir_name}/result.json", 'w+', encoding: Encoding::UTF_8) {|f| f.write(JSON.pretty_generate(@result)) }
+  if @result[:systems].length > 0
+    puts "## generating results..."
+    @result[:end_time] = Time.now
+    dir_name = "testruns/#{@result[:name]}"
+    Dir.mkdir(dir_name)
+    File.open("#{dir_name}/result.json", 'w+', encoding: Encoding::UTF_8) {|f| f.write(JSON.pretty_generate(@result)) }
+  else
+    puts "## exiting without generating anything, because nothing was tested (maybe box name didn't match anything)"
+  end
 end
 
 desc 'retest only a box or example for a given testrun'
