@@ -1,5 +1,5 @@
-name: Mac OS X 10.6.2
-box: vagrant-osx-10.6.2
+name: Mac OS X 10.8
+box: vagrant-osx-10.8
 os: osx
 pre_commands:
   on_box: rm -rf /vagrant/of
