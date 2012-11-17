@@ -24,9 +24,10 @@ ENV['VAGRANT_HOME'] = @config['vagrant_home']
 # end
 
 desc 'test everything on all VMs or specify a box by name'
-task :test, :box do |t, args|
+task :test, :name, :box do |t, args|
   start_time = Time.now
-  @result[:name] = "run_#{start_time.strftime('%Y-%m-%d_%H%M%S')}"
+  name = args.name ? args.name.gsub(' ', '_') : 'standard_run'
+  @result[:name] = "#{start_time.strftime('%Y%m%d_%H%M%S')}-#{name}"
   @result[:start_time] = start_time
   @result[:end_time] = ""
   unless File.directory?("tmp/of_source")
