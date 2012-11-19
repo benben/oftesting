@@ -75,7 +75,7 @@
 
             system['tests'].each do |t|
               if t['name'] == test
-                out = '<td><a href="'+system['name']+'/tests/'+test+'"><span class="badge badge-'
+                out = '<td><a style="text-decoration:none;" href="'+system['box']+'/tests/'+test+'"><span class="badge badge-'
                 out += 'success' if t['status'] == 'passed'
                 out += 'warning' if t['status'] == 'warning'
                 out += 'important' if t['status'] == 'error'
@@ -114,7 +114,7 @@
 
             system['tests'].each do |t|
               if t['name'] == test
-                out = '<td><a href="'+system['name']+'/tests/'+test+'">'
+                out = '<td><a style="text-decoration:none;" href="'+system['box']+'/tests/'+test+'">'
                 out += '<span class="badge badge-success">&nbsp;</span>' if t['status'] == 'passed'
                 out += '<span class="badge badge-warning">&nbsp;</span>' if t['status'] == 'warning'
                 out += '<span class="badge badge-important">&nbsp;</span>' if t['status'] == 'error'
