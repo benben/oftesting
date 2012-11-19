@@ -354,7 +354,8 @@ def run_recipes *args
       category = File.dirname(dir).match /[^\/]+$/
       name = dir.match(/[^\/]+$/)[0]
       next unless name == only_this_example if only_this_example
-      puts "# compiling #{name} ( #{current_example} / #{examples_count} ) on #{recipe['name']} ( #{current_recipe} / #{@recipes.count} )..."
+      recipe_count = only_on_box ? 1 : @recipes.count
+      puts "# compiling #{name} ( #{current_example} / #{examples_count} ) on #{recipe['name']} ( #{current_recipe} / #{recipe_count} )..."
 
       res = shell_exec_on recipe['box'], "cd #{dir} && #{recipe['examples_compile_command'].gsub('NAME', name)}", 600
       box_result[:tests] << {:name => name, :category => category}.merge!(res)
