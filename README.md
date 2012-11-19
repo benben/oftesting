@@ -25,6 +25,9 @@ rake retest[name-of-testrun,vagrant-osx-10.8,allAddonsExample] # rerun the allAd
 
 rake generate # generate html
 rake deploy # deploy to gh-pages
+
+rake create # creates and imports all boxes to vagrant specified in recipes
+rake create[vagrant-archlinux-64bit] # creates and imports the box specified to vagrant
 ```
 
 ## License

@@ -343,8 +343,10 @@ def run_recipes *args
 
     #compile examples
     puts '## compiling all examples...'
-    examples = Dir["share/of/examples/*/*/Makefile"].map{|e| e =~ /android/ ? nil : e}.compact
-    examples_count = examples.count
+    examples = Dir["share/of/examples/*/*/Makefile"].delete_if{|e| e =~ /android/}
+    #remove osx examples if we're not on osx
+    examples = examples.delete_if{|e| e =~ /osx/} unless recipe['os'] == 'osx'
+    examples_count = only_this_example ? 1 : examples.count
     current_example = 1
     examples.each do |makefile|
       makefile.gsub!(/^share\//, '/vagrant/')
