@@ -34,7 +34,7 @@ task :test, :name, :box do |t, args|
     puts '# copying openFrameworks source'
     shell_exec "cp -r #{@config['of_source']} tmp/of_source"
     # saving the last commit sha
-    shell_exec "cd tmp/of_source && git rev-parse upstream/develop > ../commit && cd -"
+    shell_exec "cd tmp/of_source && git rev-parse develop > ../commit && cd -"
     # removing all the git stuff
     shell_exec "rm -rf tmp/of_source/.git"
   end
@@ -281,6 +281,10 @@ def run_recipes *args
     puts "# making fresh OF copy for #{recipe['name']}"
     shell_exec "rm -rf share/of"
     shell_exec "cp -r tmp/of_source share/of"
+
+    puts "## patching OF source for automation..."
+    patched = shell_exec "cd share/of && patch -p1 < ../../../oftesting.patch && cd ../.."
+    raise "##################\n# PATCHING FAILED!\n##################\nexiting..." unless patched[:status] == 'passed'
 
     #starting the box
     puts '# starting the vm...'
