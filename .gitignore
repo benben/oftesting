@@ -7,3 +7,4 @@ testruns/*
 tmp/*
 login.yml
 db.sqlite3
+.bundle/
