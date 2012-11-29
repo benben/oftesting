@@ -14,7 +14,7 @@ Vagrant::Config.run do |config|
       end
       box_config.vm.customize ['modifyvm', :id, '--ioapic', 'on', '--memory', of_config['memory_size'], '--cpus', of_config['cpu_count']]
       box_config.vbguest.auto_update = false
-    #   #box_config.vm.boot_mode = :gui
+      #box_config.vm.boot_mode = :gui
     end
   end
 end

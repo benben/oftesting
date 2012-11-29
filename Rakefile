@@ -35,14 +35,8 @@ task :test, :name, :box do |t, args|
   @result[:name] = "#{start_time.strftime('%Y%m%d_%H%M%S')}-#{name}"
   @result[:start_time] = start_time
   @result[:end_time] = ""
-  unless File.directory?("tmp/of_source")
-    puts '# copying openFrameworks source'
-    shell_exec "cp -r #{@config['of_source']} tmp/of_source"
-    # saving the last commit sha
-    shell_exec "cd tmp/of_source && git rev-parse develop > ../commit && cd -"
-    # removing all the git stuff
-    shell_exec "rm -rf tmp/of_source/.git"
-  end
+
+  prepare_of_source!
 
   @result[:commit] = File.read('tmp/commit').chomp
 
@@ -61,6 +55,13 @@ task :test, :name, :box do |t, args|
   else
     puts "## exiting without generating anything, because nothing was tested (maybe box name didn't match anything)"
   end
+end
+
+desc 'open specific box with provisioned OF for inspection'
+task :open, :box do |t, args|
+  prepare_of_source!
+
+  open box: args.box
 end
 
 desc 'retest only a box or example for a given testrun'
@@ -268,6 +269,69 @@ task :halt do
   shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
 end
 
+def open *args
+  only_on_box = nil
+  if args[0]
+    only_on_box = args[0][:box] if args[0][:box]
+  end
+
+  if only_on_box
+    @recipes.each do |recipe|
+      next unless recipe['name'].match(Regexp.new(only_on_box,true))
+
+      copy_of_source!
+
+      patch_of_source!
+
+      #patch gui mode in Vagrantfile for this moment
+      content = File.read('Vagrantfile')
+      replace = content.gsub(/#box_config.vm.boot_mode = :gui/, 'box_config.vm.boot_mode = :gui')
+      File.open('Vagrantfile', 'w') {|file| file.puts replace}
+
+      #starting the box
+      puts '# starting the vm...'
+      shell_exec "vagrant up #{recipe['box']}", 120
+
+      #revert changes...
+      content = File.read('Vagrantfile')
+      replace = content.gsub(/box_config.vm.boot_mode = :gui/, '#box_config.vm.boot_mode = :gui')
+      File.open('Vagrantfile', 'w') {|file| file.puts replace}
+
+      # #running commands from recipe
+      puts "## running #{recipe['name']} as #{recipe['os'].upcase}..."
+
+      if recipe['os'] == 'win'
+        #just trigger the net drive for the first time, dunno why, maybe bug
+        puts '# waiting for the net drives on windows...'
+        wait = true
+        while wait do
+          res = shell_exec_on recipe['box'], 'ls //vboxsvr/vagrant/'
+          if res[:status] != 'error'
+            wait = false
+          else
+            sleep 5
+          end
+        end
+      end
+
+      #running os specific pre commands
+      puts "# running pre commands..."
+      if recipe['pre_commands']
+        recipe['pre_commands'].each do |where, command|
+          if where == 'on_box'
+            shell_exec_on recipe['box'], command
+          else
+            shell_exec command
+          end
+        end
+      end
+
+      #break sicne we wnat to run it only on one box
+      break
+    end
+  end
+end
+
 def run_recipes *args
   only_on_box = nil
   only_this_example = nil
@@ -282,37 +346,9 @@ def run_recipes *args
     # if box is set through args, skip if it doesnt match
     next unless recipe['name'].match(Regexp.new(only_on_box,true)) if only_on_box
 
-    #copying fresh of folder
-    puts "# making fresh OF copy for #{recipe['name']}"
-    shell_exec "rm -rf share/of"
-    shell_exec "cp -r tmp/of_source share/of"
+    copy_of_source!
 
-    puts "## patching OF source for automation..."
-    Dir["share/of/scripts/linux/{debian,ubuntu}/*"].each do |f|
-      content = File.read(f)
-      replace = content.gsub(/apt-get/, 'apt-get -y --force-yes')
-      File.open(f, "w") {|file| file.puts replace}
-    end
-
-    Dir["share/of/scripts/linux/fedora/*"].each do |f|
-      content = File.read(f)
-      replace = content.gsub(/yum/, 'yum -y')
-      File.open(f, "w") {|file| file.puts replace}
-    end
-
-    Dir["share/of/scripts/linux/archlinux/*"].each do |f|
-      content = File.read(f)
-      replace = content.gsub(/pacman -Sy --needed/, 'pacman -Sy --noprogressbar --needed --noconfirm')
-      replace = replace.gsub(/pacman -Rs/, 'pacman -Rs --noconfirm')
-      File.open(f, "w") {|file| file.puts replace}
-    end
-
-    %w(share/of/scripts/linux/compileOF.sh share/of/scripts/linux/compilePG.sh).each do |f|
-      content = File.read(f)
-      replace = content.gsub(/make Debug/, 'make -j4 Debug')
-      replace = replace.gsub(/make Release/, 'make -j4 Release')
-      File.open(f, "w") {|file| file.puts replace}
-    end
+    patch_of_source!
 
     #starting the box
     puts '# starting the vm...'
@@ -410,6 +446,53 @@ def run_recipes *args
     puts "# deleting OF folder..."
     shell_exec "rm -rf #{@config['share_folder']}/of"
     current_recipe += 1
+  end
+end
+
+def prepare_of_source!
+  unless File.directory?("tmp/of_source")
+    puts '# copying openFrameworks source'
+    shell_exec "cp -r #{@config['of_source']} tmp/of_source"
+    # saving the last commit sha
+    shell_exec "cd tmp/of_source && git rev-parse develop > ../commit && cd -"
+    # removing all the git stuff
+    shell_exec "rm -rf tmp/of_source/.git"
+  end
+end
+
+def copy_of_source!
+  #copying fresh of folder
+  puts "# making fresh temp OF copy"
+  shell_exec "rm -rf share/of"
+  shell_exec "cp -r tmp/of_source share/of"
+end
+
+def patch_of_source!
+  puts "## patching OF source for automation..."
+  Dir["share/of/scripts/linux/{debian,ubuntu}/*"].each do |f|
+    content = File.read(f)
+    replace = content.gsub(/apt-get/, 'apt-get -y --force-yes')
+    File.open(f, "w") {|file| file.puts replace}
+  end
+
+  Dir["share/of/scripts/linux/fedora/*"].each do |f|
+    content = File.read(f)
+    replace = content.gsub(/yum/, 'yum -y')
+    File.open(f, "w") {|file| file.puts replace}
+  end
+
+  Dir["share/of/scripts/linux/archlinux/*"].each do |f|
+    content = File.read(f)
+    replace = content.gsub(/pacman -Sy --needed/, 'pacman -Sy --noprogressbar --needed --noconfirm')
+    replace = replace.gsub(/pacman -Rs/, 'pacman -Rs --noconfirm')
+    File.open(f, "w") {|file| file.puts replace}
+  end
+
+  %w(share/of/scripts/linux/compileOF.sh share/of/scripts/linux/compilePG.sh).each do |f|
+    content = File.read(f)
+    replace = content.gsub(/make Debug/, 'make -j4 Debug')
+    replace = replace.gsub(/make Release/, 'make -j4 Release')
+    File.open(f, "w") {|file| file.puts replace}
   end
 end
 
