@@ -288,8 +288,31 @@ def run_recipes *args
     shell_exec "cp -r tmp/of_source share/of"
 
     puts "## patching OF source for automation..."
-    patched = shell_exec "cd share/of && patch -p1 < ../../../oftesting.patch && cd ../.."
-    raise "##################\n# PATCHING FAILED!\n##################\nexiting..." unless patched[:status] == 'passed'
+    Dir["share/of/scripts/linux/{debian,ubuntu}/*"].each do |f|
+      content = File.read(f)
+      replace = content.gsub(/apt-get/, 'apt-get -y --force-yes')
+      File.open(f, "w") {|file| file.puts replace}
+    end
+
+    Dir["share/of/scripts/linux/fedora/*"].each do |f|
+      content = File.read(f)
+      replace = content.gsub(/yum/, 'yum -y')
+      File.open(f, "w") {|file| file.puts replace}
+    end
+
+    Dir["share/of/scripts/linux/archlinux/*"].each do |f|
+      content = File.read(f)
+      replace = content.gsub(/pacman -Sy --needed/, 'pacman -Sy --noprogressbar --needed --noconfirm')
+      replace = replace.gsub(/pacman -Rs/, 'pacman -Rs --noconfirm')
+      File.open(f, "w") {|file| file.puts replace}
+    end
+
+    %w(share/of/scripts/linux/compileOF.sh share/of/scripts/linux/compilePG.sh).each do |f|
+      content = File.read(f)
+      replace = content.gsub(/make Debug/, 'make -j4 Debug')
+      replace = replace.gsub(/make Release/, 'make -j4 Release')
+      File.open(f, "w") {|file| file.puts replace}
+    end
 
     #starting the box
     puts '# starting the vm...'
