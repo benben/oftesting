@@ -7,6 +7,11 @@ require 'json'
 require 'timeout'
 require 'active_record'
 
+#stuff for github
+require 'github_api'
+login = YAML.load_file('login.yml')
+@github = Github.new basic_auth: "#{login['user']}:#{login['pass']}"
+
 require 'lib/shell_exec'
 require 'lib/result_utils'
 
@@ -383,4 +388,52 @@ def run_recipes *args
     shell_exec "rm -rf #{@config['share_folder']}/of"
     current_recipe += 1
   end
+end
+
+desc "Update openframeworks source in #{@config['of_source']}"
+task :update_source do
+  Dir.chdir(@config['of_source']) do
+    puts `git fetch upstream`
+    puts `git checkout master`
+    puts `git merge upstream/master`
+    puts `git push origin master`
+    puts `git checkout develop`
+    puts `git merge upstream/develop`
+    puts `git push origin develop`
+  end
+end
+
+desc "Add a PR branch to the openframeworks source in #{@config['of_source']}"
+task :prepare_pr, :pull_request_id do |t, args|
+  unless args.pull_request_id
+    puts "please specify a pull_request_id"
+    exit
+  end
+  pull_request_id = args.pull_request_id
+
+  pr = @github.pull_requests.get('openframeworks', 'openFrameworks', pull_request_id)
+
+  unless pr.mergeable
+    puts "this PR cannot be merged automatically."
+    exit
+  end
+
+  owner   = pr.head.repo.owner.login
+  git_url = pr.head.repo.git_url
+  branch  = pr.head.ref
+
+  Dir.chdir(@config['of_source']) do
+    unless `git remote`.split("\n").include?(owner)
+      puts "# adding remote '#{owner}' to of source"
+      puts `git remote add #{owner} #{git_url}`
+    end
+    pr_branch_name = "pr_#{pull_request_id}"
+    puts `git fetch #{owner} #{branch}:#{pr_branch_name}`
+    puts `git checkout develop`
+    puts `git checkout -b develop_merged_with_#{pr_branch_name}`
+    puts `git merge #{pr_branch_name}`
+  end
+
+  require 'pry'
+  binding.pry
 end
