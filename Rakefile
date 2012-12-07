@@ -41,7 +41,12 @@ task :test, :name, :box do |t, args|
   @result[:commit] = File.read('tmp/commit').chomp
 
   if args.box
-    run_recipes box: args.box
+    #if we want to test on all systems of a specific OS
+    if args.box =~ /^os:/
+      run_recipes system: args.box.match(/^os:(.+)/)[1]
+    else
+      run_recipes box: args.box
+    end
   else
     run_recipes
   end
@@ -336,8 +341,9 @@ def run_recipes *args
   only_on_box = nil
   only_this_example = nil
   if args[0]
-    only_on_box = args[0][:box] if args[0][:box]
+    only_on_box       = args[0][:box]     if args[0][:box]
     only_this_example = args[0][:example] if args[0][:example]
+    only_on_system    = args[0][:system]  if args[0][:system]
   end
 
   current_recipe = 1
@@ -345,6 +351,7 @@ def run_recipes *args
   @recipes.each do |recipe|
     # if box is set through args, skip if it doesnt match
     next unless recipe['name'].match(Regexp.new(only_on_box,true)) if only_on_box
+    next unless recipe['os'].match(Regexp.new(only_on_system,true)) if only_on_system
 
     copy_of_source!
 
@@ -536,10 +543,8 @@ task :prepare_pr, :pull_request_id do |t, args|
     pr_branch_name = "pr_#{pull_request_id}"
     puts `git fetch #{owner} #{branch}:#{pr_branch_name}`
     puts `git checkout develop`
+    #TODO: if branch exists, checkout only
     puts `git checkout -b develop_merged_with_#{pr_branch_name}`
     puts `git merge #{pr_branch_name}`
   end
-
-  require 'pry'
-  binding.pry
 end

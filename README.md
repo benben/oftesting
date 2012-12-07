@@ -17,14 +17,19 @@ See results here: http://videosynthesis.net/oftesting
 
 ``` bash
 rake test # compile everything on all platforms
-rake test['only on osx 10.8','mac'] # give the testrun a name and compile everything only on osx
+rake test['only on osx 10.8','mac'] # give the testrun a name and compile everything only on boxes with 'mac' in the name
+rake test['PR 1716 on all linux machines','os:linux'] # run named testrun on all linux machines
 
 rake retest[last,vagrant-osx-10.8] # rerun all examples on OSX and update the last test
 rake retest[last,vagrant-osx-10.8,allAddonsExample] # rerun the allAddonsExample on OSX and update the last test
 rake retest[name-of-testrun,vagrant-osx-10.8,allAddonsExample] # rerun the allAddonsExample on OSX and update the test with the name 'name-of-testrun'
 
 rake generate # generate html
-rake deploy # deploy to gh-pages
+rake deploy   # deploy to gh-pages
+
+rake update_source    # updates the openFrameworks source specified in config.yml
+rake prepare_pr[1716] # prepare an extra branch where the specified PR is merged
+
 
 rake create # creates and imports all boxes to vagrant specified in recipes
 rake create[vagrant-archlinux-64bit] # creates and imports the box specified to vagrant
