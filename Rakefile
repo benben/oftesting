@@ -29,12 +29,13 @@ ENV['VAGRANT_HOME'] = @config['vagrant_home']
 # end
 
 desc 'test everything on all VMs or specify a box by name'
-task :test, :name, :box do |t, args|
-  start_time = Time.now
-  name = args.name ? args.name.gsub(' ', '_') : 'standard_run'
+task :test, :name, :box, :example do |t, args|
+  start_time     = Time.now
+  name           = args.name ? args.name.gsub(' ', '_') : 'standard_run'
+  example        = args.example
   @result[:name] = "#{start_time.strftime('%Y%m%d_%H%M%S')}-#{name}"
   @result[:start_time] = start_time
-  @result[:end_time] = ""
+  @result[:end_time]   = ""
 
   prepare_of_source!
 
@@ -43,9 +44,17 @@ task :test, :name, :box do |t, args|
   if args.box
     #if we want to test on all systems of a specific OS
     if args.box =~ /^os:/
-      run_recipes system: args.box.match(/^os:(.+)/)[1]
+      unless example
+        run_recipes system: args.box.match(/^os:(.+)/)[1]
+      else
+        run_recipes system: args.box.match(/^os:(.+)/)[1], example: example
+      end
     else
-      run_recipes box: args.box
+      unless example
+        run_recipes box: args.box
+      else
+        run_recipes box: args.box, example: example
+      end
     end
   else
     run_recipes
@@ -77,6 +86,7 @@ task :retest, :testrun, :box, :example do |t, args|
   raise "please specify an existing testrun. exit!" unless (Dir['testruns/*'].map{|d| d.gsub('testruns/','')}.include?(testrun) or testrun == 'last') and testrun
   raise "please specify an existing box. exit!" unless box
   testrun = Dir['testruns/*'].map{|d| d.gsub('testruns/','')}.sort.last if testrun == 'last'
+
   last_result = JSON.parse(File.read("testruns/#{testrun}/result.json"))
 
   #getting index of the system array in the result file
@@ -84,6 +94,8 @@ task :retest, :testrun, :box, :example do |t, args|
   last_result['systems'].each_with_index do |sys, i|
     sys_index = i if sys['name'] == box
   end
+
+  prepare_of_source!
 
   #if no box matches, sys index will append to alredy existing systems
   if sys_index == -1
