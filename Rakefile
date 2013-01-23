@@ -281,9 +281,12 @@ end
 
 desc 'halt all running boxes with Virtualbox'
 task :halt do
-  puts '# halting the vm...'
-  running_vm_id = shell_exec('VBoxManage list runningvms')[:log_complete][0].match(/^"(.+)"/)[1]
-  shell_exec "VBoxManage controlvm #{running_vm_id} poweroff"
+  running_vm_ids = shell_exec('VBoxManage list runningvms')[:log_complete].map{|line| line.match(/^"(.+)"/)[1]}
+
+  running_vm_ids.each do |vm_id|
+    puts "# halting #{vm_id}..."
+    shell_exec "VBoxManage controlvm #{vm_id} poweroff"
+  end
 end
 
 def open *args
@@ -460,6 +463,9 @@ def run_recipes *args
     else
       shell_exec_on recipe['box'], recipe['halt_command']
     end
+
+    #kill all remaining running vms
+    Rake::Task["halt"].execute
 
     #deleting the of folder
     puts "# deleting OF folder..."
