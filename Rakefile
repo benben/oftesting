@@ -531,6 +531,7 @@ task :update_source do
     puts `git checkout develop`
     puts `git merge upstream/develop`
     puts `git push origin develop`
+    puts `git submodule foreach git pull origin master`
   end
 end
 
