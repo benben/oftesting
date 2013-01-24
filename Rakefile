@@ -524,13 +524,10 @@ end
 desc "Update openframeworks source in #{@config['of_source']}"
 task :update_source do
   Dir.chdir(@config['of_source']) do
-    puts `git fetch upstream`
     puts `git checkout master`
-    puts `git merge upstream/master`
-    puts `git push origin master`
+    puts `git pull origin master`
     puts `git checkout develop`
-    puts `git merge upstream/develop`
-    puts `git push origin develop`
+    puts `git pull origin develop`
     puts `git submodule update --init`
   end
 end
