@@ -564,3 +564,10 @@ task :prepare_pr, :pull_request_id do |t, args|
     puts `git merge #{pr_branch_name}`
   end
 end
+
+desc 'Show current HEAD of OF repo'
+task :show_head do
+  Dir.chdir(@config['of_source']) do
+    shell_exec('git log -1')
+  end
+end

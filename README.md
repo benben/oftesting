@@ -29,6 +29,7 @@ rake open['Arch Linux GNOME 32bit'] # open box with gui and provisioned OF for i
 rake generate # generate html
 rake deploy   # deploy to gh-pages
 
+rake show_head        # shows current HEAD of the openFrameworks source
 rake update_source    # updates the openFrameworks source specified in config.yml
 rake prepare_pr[1716] # prepare an extra branch where the specified PR is merged
 
