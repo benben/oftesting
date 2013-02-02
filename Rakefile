@@ -420,7 +420,7 @@ def run_recipes *args
     %w[Debug Release].each do |target|
       puts "# compiling OF lib #{target}"
       target = target.downcase if recipe['os'] == 'win'
-      res = shell_exec_on recipe['box'], recipe['lib_compile_command'].gsub('TARGET', target)
+      res = shell_exec_on recipe['box'], recipe['lib_compile_command'].gsub('TARGET', target), 600
       box_result[:tests] << {:name => "OF lib #{target.capitalize} compile"}.merge!(res)
     end
 
@@ -479,7 +479,7 @@ def prepare_of_source!
     puts '# copying openFrameworks source'
     shell_exec "cp -r #{@config['of_source']} tmp/of_source"
     # saving the last commit sha
-    shell_exec "cd tmp/of_source && git rev-parse develop > ../commit && cd -"
+    shell_exec 'cd tmp/of_source && git log -1 --pretty=format:"%H" > ../commit && cd -'
     # removing all the git stuff
     shell_exec "rm -rf tmp/of_source/.git"
   end
