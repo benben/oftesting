@@ -416,12 +416,14 @@ def run_recipes *args
       end
     end
 
-    #compile of
-    %w[Debug Release].each do |target|
-      puts "# compiling OF lib #{target}"
-      target = target.downcase if recipe['os'] == 'win'
-      res = shell_exec_on recipe['box'], recipe['lib_compile_command'].gsub('TARGET', target), 600
-      box_result[:tests] << {:name => "OF lib #{target.capitalize} compile"}.merge!(res)
+    if recipe['lib_compile_command']
+      #compile of
+      %w[Debug Release].each do |target|
+        puts "# compiling OF lib #{target}"
+        target = target.downcase if recipe['os'] == 'win'
+        res = shell_exec_on recipe['box'], recipe['lib_compile_command'].gsub('TARGET', target), 600
+        box_result[:tests] << {:name => "OF lib #{target.capitalize} compile"}.merge!(res)
+      end
     end
 
     #compile pg
