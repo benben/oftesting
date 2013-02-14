@@ -1,0 +1,782 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>openFrameworks testing</title>
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <link rel="stylesheet" href="../../../css/font-awesome.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+<!--     <div class="container">
+      <header>
+        <h1>openFrameworks testing</h1>
+        <p>automatic cross-platform testing suite for openframeworks</p>
+      </header>
+    </div> -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/oftesting">openFrameworks testing</a>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="margin-top: 30px;">
+
+  <h3><a href="../../../">Home</a> / <a href="../">v0.7.4</a> / Debian 6.0.5 GNOME 32bit</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Test</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+          <td><a href="tests/install_codecs.sh/">install_codecs.sh</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/install_codecs.sh/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/install_dependencies.sh/">install_dependencies.sh</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/install_dependencies.sh/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/install_codeblocks.sh/">install_codeblocks.sh</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/install_codeblocks.sh/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/remove_codeblocks.sh/">remove_codeblocks.sh</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/remove_codeblocks.sh/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/OF lib Debug compile/">OF lib Debug compile</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/OF lib Debug compile/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/OF lib Release compile/">OF lib Release compile</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/OF lib Release compile/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/projectGenerator/">projectGenerator</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/projectGenerator/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/vectorMathExample/">vectorMathExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/vectorMathExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/particlesExample/">particlesExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/particlesExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/noiseField2dExample/">noiseField2dExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/noiseField2dExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/noise1dOctaveExample/">noise1dOctaveExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/noise1dOctaveExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/trigonometryExample/">trigonometryExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/trigonometryExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/trigonometricMotionExample/">trigonometricMotionExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/trigonometricMotionExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/periodicSignalsExample/">periodicSignalsExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/periodicSignalsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/noise1dExample/">noise1dExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/noise1dExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/emptyExample/">emptyExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/emptyExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/videoPlayerExample/">videoPlayerExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/videoPlayerExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/videoGrabberExample/">videoGrabberExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/videoGrabberExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/asciiVideo/">asciiVideo</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/asciiVideo/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/QuaternionArcballExample/">QuaternionArcballExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/QuaternionArcballExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/pointPickerExample/">pointPickerExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/pointPickerExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/easyCamExample/">easyCamExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/easyCamExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/cameraParentingExample/">cameraParentingExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/cameraParentingExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/normalsExample/">normalsExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/normalsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/ofBoxExample/">ofBoxExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/ofBoxExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/orientationExample/">orientationExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/orientationExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/modelNoiseExample/">modelNoiseExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/modelNoiseExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/meshFromCamera/">meshFromCamera</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/meshFromCamera/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/advanced3dExample/">advanced3dExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/advanced3dExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/cameraLensOffsetExample/">cameraLensOffsetExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/cameraLensOffsetExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/QuaternionLatLongExample/">QuaternionLatLongExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/QuaternionLatLongExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/pointCloudExample/">pointCloudExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/pointCloudExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/cameraRibbonExample/">cameraRibbonExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/cameraRibbonExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/soundPlayerFFTExample/">soundPlayerFFTExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/soundPlayerFFTExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/soundPlayerExample/">soundPlayerExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/soundPlayerExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/audioInputExample/">audioInputExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/audioInputExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/audioOutputExample/">audioOutputExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/audioOutputExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/imageSequenceExample/">imageSequenceExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/imageSequenceExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/rectangleAlignmentAndScaling/">rectangleAlignmentAndScaling</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/rectangleAlignmentAndScaling/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/imageSubsectionExample/">imageSubsectionExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/imageSubsectionExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/fontShapesExample/">fontShapesExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/fontShapesExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/imageLoaderExample/">imageLoaderExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/imageLoaderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/pdfExample/">pdfExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/pdfExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/fontsExample/">fontsExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/fontsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/imageLoaderWebExample/">imageLoaderWebExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/imageLoaderWebExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/polygonExample/">polygonExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/polygonExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/lutFilterExample/">lutFilterExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/lutFilterExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/color/">color</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/color/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/colorsExtended/">colorsExtended</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/colorsExtended/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/floatingPointImageExample/">floatingPointImageExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/floatingPointImageExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/graphicsExample/">graphicsExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/graphicsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/blendingExample/">blendingExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/blendingExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/imageSaverExample/">imageSaverExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/imageSaverExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/simpleColorKey/">simpleColorKey</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/simpleColorKey/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/polylineBlobsExample/">polylineBlobsExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/polylineBlobsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/imageCompressionExample/">imageCompressionExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/imageCompressionExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/dragDropExample/">dragDropExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/dragDropExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/regularExpressionExample/">regularExpressionExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/regularExpressionExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/systemSpeakExample/">systemSpeakExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/systemSpeakExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/threadExample/">threadExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/threadExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/windowExample/">windowExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/windowExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/fileBufferLoadingCSVExample/">fileBufferLoadingCSVExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/fileBufferLoadingCSVExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/loggingExample/">loggingExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/loggingExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/sortingExample/">sortingExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/sortingExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/fileOpenSaveDialogExample/">fileOpenSaveDialogExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/fileOpenSaveDialogExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/conversionExample/">conversionExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/conversionExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/loadTextFileExample/">loadTextFileExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/loadTextFileExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/dirListExample/">dirListExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/dirListExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/firmataExample/">firmataExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/firmataExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/serialExample/">serialExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/serialExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/networkTcpClientExample/">networkTcpClientExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/networkTcpClientExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/networkUdpReceiverExample/">networkUdpReceiverExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/networkUdpReceiverExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/vectorGraphicsExample/">vectorGraphicsExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/vectorGraphicsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/threadedImageLoaderExample/">threadedImageLoaderExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/threadedImageLoaderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/networkUdpSenderExample/">networkUdpSenderExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/networkUdpSenderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/oscChatSystemExample/">oscChatSystemExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/oscChatSystemExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/svgExample/">svgExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/svgExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/oscReceiveExample/">oscReceiveExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/oscReceiveExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/networkTcpServerExample/">networkTcpServerExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/networkTcpServerExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/allAddonsExample/">allAddonsExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/allAddonsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/assimpExample/">assimpExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/assimpExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/3DModelLoaderExample/">3DModelLoaderExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/3DModelLoaderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/xmlSettingsExample/">xmlSettingsExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/xmlSettingsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/opencvExample/">opencvExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/opencvExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/oscSenderExample/">oscSenderExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/oscSenderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/opencvHaarFinderExample/">opencvHaarFinderExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/opencvHaarFinderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/eventsExample/">eventsExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/eventsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/simpleEventsExample/">simpleEventsExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/simpleEventsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/advancedEventsExample/">advancedEventsExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/advancedEventsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/simpleTimer/">simpleTimer</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/simpleTimer/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/customEventExample/">customEventExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/customEventExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/viewportExample/">viewportExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/viewportExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/vboExample/">vboExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/vboExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/alphaMaskingShaderExample/">alphaMaskingShaderExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/alphaMaskingShaderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/textureScreengrabExample/">textureScreengrabExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/textureScreengrabExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/slowFastRendering/">slowFastRendering</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/slowFastRendering/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/billboardRotationExample/">billboardRotationExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/billboardRotationExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/fboTrailsExample/">fboTrailsExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/fboTrailsExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/singleLightExample/">singleLightExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/singleLightExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/GPUparticleSystemExample/">GPUparticleSystemExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/GPUparticleSystemExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/billboardExample/">billboardExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/billboardExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/multiLightExample/">multiLightExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/multiLightExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/textureExample/">textureExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/textureExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/geometryShaderExample/">geometryShaderExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/geometryShaderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/shaderExample/">shaderExample</a></td>
+          <td class="passed">passed</td>
+          <td><a href="tests/shaderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/glInfoExample/">glInfoExample</a></td>
+          <td class="error">error</td>
+          <td><a href="tests/glInfoExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/multiTextureShaderExample/">multiTextureShaderExample</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/multiTextureShaderExample/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+        <tr>
+          <td><a href="tests/pointsAsTextures/">pointsAsTextures</a></td>
+          <td class="warning">warning</td>
+          <td><a href="tests/pointsAsTextures/"><i class="icon-search"></i></a></td>
+        </tr>
+      
+    </tbody>
+  </table>
+</div>
+  <div class="container" style="margin-top:30px;">
+    <p>This project is maintained by <a href="https://github.com/benben">benben</a>. All content on this site is released under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a></p>
+  </div>
+    <script src="../../../js/jquery-1.7.2.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function (){
+        $('.container p.dropdown a').click(function(ev){
+          ev.preventDefault();
+          if ($(this).parent().next().is(":visible")) {
+            console.log('collapse!');
+            $(this).children('i').removeClass('icon-caret-down').addClass('icon-caret-right');
+            $(this).parent().next().hide();
+          } else {
+            console.log('expand!');
+            $(this).children('i').removeClass('icon-caret-right').addClass('icon-caret-down');
+            $(this).parent().next().show();
+          }
+        });
+
+        //expand last result
+        $('.container p.dropdown a').first().children('i').removeClass('icon-caret-right').addClass('icon-caret-down');
+        $('.container p.dropdown a').first().parent().next().show();
+
+        //test view
+        function mark_line(line_number_hash) {
+          var n = line_number_hash.match(/\d+/);
+          if (n) {
+            $('.code pre .line-wrap span:nth-child('+n+')').css('background-color', '#FFFB8C');
+          }
+        }
+
+        $('span.line-number a').click(function(){
+          $('.code pre .line-wrap span').css('background-color', 'transparent');
+          mark_line($(this).attr('href'));
+        });
+
+        if(window.location.hash) {
+          mark_line(window.location.hash);
+        }
+
+        $('#show_only_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Only Errors');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').hide();
+          $('.line-number:not(.line-number-error)').hide();
+        });
+        $('#show_no_errors').click(function(ev){
+          ev.preventDefault();
+          $(this).text('No Errors');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_everything').text('').append('<a href="#">Everything</a>');
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+          $('.line-error').hide();
+          $('.line-number-error').hide();
+        });
+        $('#show_everything').click(function(ev){
+          ev.preventDefault();
+          $(this).text('Everything');
+          $('#show_only_errors').text('').append('<a href="#">Only Errors</a>');
+          $('#show_no_errors').text('').append('<a href="#">No Errors</a>');
+          $('.line-error').show();
+          $('.line-number-error').show();
+          $('.line:not(.line-error)').show();
+          $('.line-number:not(.line-number-error)').show();
+        });
+      });
+    </script>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-28178219-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </body>
+</html>
+
