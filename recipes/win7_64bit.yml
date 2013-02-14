@@ -3,8 +3,7 @@ box: vagrant-windows7-64bit
 os: win
 pre_commands:
   on_box: rm -rf /vagrant
-  on_box: cp -r //vboxsvr/vagrant /
-#  on_box: rm -rf /Users/vagrant/AppData/Roaming/codeblocks
+  on_box: cp -r //vboxsvr/vagrant/ /
 #lib_compile_command: cd /vagrant/of/libs/openFrameworksCompiled/project/win_cb/ && codeblocks.exe /na /nd /ns /nc /d --rebuild --target=TARGET openFrameworksLib.cbp
 examples_compile_command: codeblocks.exe /na /nd /ns /nc /d --rebuild --target=debug NAME.cbp
 halt_command: shutdown -s -t 1

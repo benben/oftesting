@@ -16,7 +16,7 @@ require 'lib/shell_exec'
 require 'lib/result_utils'
 
 @config = YAML.load_file('config.yml')
-@recipes = Dir['recipes/*'].map!{|recipe| YAML.load_file(recipe)}
+@recipes = Dir['recipes/*'].sort.reverse.map!{|recipe| YAML.load_file(recipe)}
 @result = {systems: []}
 
 require 'tasks/db'
