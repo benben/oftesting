@@ -524,13 +524,26 @@ def patch_of_source!
 end
 
 desc "Update openframeworks source in #{@config['of_source']}"
-task :update_source do
+task :update_source => [:clean] do
   Dir.chdir(@config['of_source']) do
+    puts `git clean -dfX`
     puts `git checkout master`
     puts `git pull origin master`
     puts `git checkout develop`
     puts `git pull origin develop`
     puts `git submodule update --init`
+  end
+
+  Dir.chdir("#{@config['of_source']}/libs/openFrameworksCompiled/project/linux64") do
+    puts `make -j8`
+  end
+
+  Dir.chdir("#{@config['of_source']}/apps/devApps/projectGenerator") do
+    puts `make -j8`
+  end
+
+  Dir.chdir("#{@config['of_source']}/apps/devApps/projectGenerator/bin") do
+    puts `./projectGenerator --allplatforms --allexamples`
   end
 end
 
