@@ -20,6 +20,7 @@ rake test # compile everything on all platforms
 rake test['PR 1838'] # name a testrun
 rake test['only on osx 10.8','mac'] # give the testrun a name and compile everything only on boxes with 'mac' in the name
 rake test['PR 1716 on all linux machines','os:linux'] # run named testrun on all linux machines
+rake test['videoPlayer Ubuntu test','Ubuntu','videoPlayerExample'] # give the testrun a name and compile the videoPlayerExample only on ubuntu boxes
 
 rake retest[last,'Debian 6.0.5 GNOME 32bit'] # rerun all examples on Debian and update the last test
 rake retest[last,'Debian 6.0.5 GNOME 32bit',allAddonsExample] # rerun the allAddonsExample on Debian and update the last test
