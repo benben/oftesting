@@ -1,6 +1,6 @@
 # oftesting - automatic cross-platform testing suite for openFrameworks
 
-See results here: http://videosynthesis.net/oftesting
+See results here: http://oftesting.benjaminknofe.com/
 
 ## Installation:
 
